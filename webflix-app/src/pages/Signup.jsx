@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 import BackgroundImage from "../components/BackgroundImage";
 import Header from "../components/Header";
 import { firebaseAuth } from "../utils/firebase-config";
@@ -12,14 +15,17 @@ function Signup() {
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSignIn = async () => {
+  const handleSignIn = async (e) => {
+    e.preventDefault();
     try {
       const { email, password } = formValues;
       await createUserWithEmailAndPassword(firebaseAuth, email, password);
+      navigate("/"); // Navigate to home on successful signup
     } catch (error) {
-      console.log(error);
+      setError(error.message);
     }
   };
 
@@ -27,8 +33,15 @@ function Signup() {
     if (currentUser) navigate("/");
   });
 
+  const handleChange = (e) => {
+    setFormValues({
+      ...formValues,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   return (
-    <Container showPassword={showPassword}>
+    <Container>
       <BackgroundImage />
       <div className="content">
         <Header login />
@@ -36,40 +49,42 @@ function Signup() {
           <div className="text flex column">
             <h1>Join the Ultimate Movie Experience!</h1>
             <h5>Explore a vast library of movies, TV shows, and much more.</h5>
-            <h6>To unlock all features enter your email and start your cinematic journey!</h6>
+            <h6>
+              To unlock all features enter your email and start your cinematic
+              journey!
+            </h6>
           </div>
           <div className="form">
             <input
               type="email"
               placeholder="Email address"
-              onChange={(e) =>
-                setFormValues({
-                  ...formValues,
-                  [e.target.name]: e.target.value,
-                })
-              }
+              onChange={handleChange}
               name="email"
               value={formValues.email}
+              required
             />
             {showPassword && (
               <input
                 type="password"
                 placeholder="Password"
-                onChange={(e) =>
-                  setFormValues({
-                    ...formValues,
-                    [e.target.name]: e.target.value,
-                  })
-                }
+                onChange={handleChange}
                 name="password"
                 value={formValues.password}
+                required
               />
             )}
             {!showPassword && (
-              <button onClick={() => setShowPassword(true)}>Get Started</button>
+              <button type="button" onClick={() => setShowPassword(true)}>
+                Get Started
+              </button>
+            )}
+            {showPassword && (
+              <button type="submit" id="SignUp" onClick={handleSignIn}>
+                Sign Up
+              </button>
             )}
           </div>
-          {showPassword && <button onClick={handleSignIn}>Sign Up</button>}
+          {error && <p style={{ color: "yellow" }}>{error}</p>}
         </div>
       </div>
     </Container>
@@ -91,6 +106,10 @@ const Container = styled.div`
 
     .body {
       gap: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
 
       .text {
         gap: 1rem;
@@ -105,7 +124,7 @@ const Container = styled.div`
       .form {
         display: grid;
         grid-template-columns: ${({ showPassword }) =>
-          showPassword ? "1fr 1fr" : "2fr 1fr"};
+          showPassword ? "1fr 1fr" : "1fr 1fr"};
         width: 60%;
 
         input {
@@ -140,6 +159,15 @@ const Container = styled.div`
         border-radius: 0.2rem;
         font-weight: bolder;
         font-size: 1.05rem;
+      }
+
+      #SignUp {
+        position: relative;
+        left: 23rem;
+        width: 11rem;
+        height: 3rem;
+        background-color: #e50914;
+        margin: .5rem;
       }
     }
   }

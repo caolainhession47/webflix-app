@@ -20,6 +20,8 @@ export default function Login() {
         return () => unsubscribe();
     }, [navigate]);
 
+    const [error, setError] = useState("");
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setCredentials({ ...credentials, [name]: value });
@@ -30,7 +32,7 @@ export default function Login() {
         try {
             await signInWithEmailAndPassword(firebaseAuth, email, password);
         } catch (error) {
-            console.error(error.code);
+            setError(error.message);
         }
     };
 
@@ -59,6 +61,7 @@ export default function Login() {
                             />
                             <button onClick={handleSubmit}>Login to your account</button>
                         </div>
+                        {error && <p style={{ color: "red" }}>{error}</p>}
                     </div>
                 </div>
             </div>
