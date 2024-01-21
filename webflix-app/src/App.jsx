@@ -1,18 +1,19 @@
-import React from 'react'
-import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Challenges from './pages/Challenges';
-import Favourites from './pages/Favourites';
-import Home from './pages/Home';
-import Media from './pages/Media';
-import Movies from './pages/Movies';
-import Person from './pages/Person';
-import Recommendations from './pages/Recommendations';
-import Search from './pages/Search';
-import Series from './pages/Series';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Watchlist from './pages/Watchlist';
+import Challenges from "./pages/Challenges";
+import Favourites from "./pages/Favourites";
+import Home from "./pages/Home";
+import Media from "./pages/Media";
+import Movies from "./pages/Movies";
+import Person from "./pages/Person";
+import Recommendations from "./pages/Recommendations";
+import Search from "./pages/Search";
+import Series from "./pages/Series";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Reviews from "./pages/Reviews";
+import Watchlist from "./pages/Watchlist";
 
 export default function App() {
   return (
@@ -30,7 +31,8 @@ export default function App() {
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signup" element={<Signup />} />
         <Route exact path="/watchlist" element={<Watchlist />} />
+        <Route exact path="/reviews" element={<Reviews />} />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
