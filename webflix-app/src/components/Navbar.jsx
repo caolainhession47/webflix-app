@@ -1,21 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPowerOff, FaBars } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import appLogo from "../assets/logo.png";
 import { firebaseAuth } from "../utils/firebase-config";
-import { signOut } from "firebase/auth";
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import Container from "react-bootstrap/Container";
 
 export default function Navbar({ isScrolled }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
+      setIsUserLoggedIn(!!user);
+    });
+    return () => unsubscribe();
+  }, []);
+
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
+  const handleSignOut = () => {
+    alert("User is logged out!");
+    signOut(firebaseAuth);
+  };
+
+  const handleLoginClick = (e) => {
+    e.preventDefault();
+    if (isUserLoggedIn) {
+      alert("You are already logged in!");
+    } else {
+      navigate("/login");
+    }
+  };
 
   const navigationLinks = [
     { name: "Home", link: "/" },
     { name: "Movies", link: "/movies" },
-    { name: "TV Shows", link: "/tv" },
+    { name: "TV Shows", link: "/series" },
     { name: "Search", link: "/search" },
-    { name: "Login", link: "/login" },
+    { name: "Login", link: "/", onClick: handleLoginClick },
   ];
 
   const sideLinks = [
@@ -27,55 +52,53 @@ export default function Navbar({ isScrolled }) {
   ];
 
   return (
-    <HeaderContainer>
+    <HeaderContainer fluid>
       <nav className={`${isScrolled ? "scrolled" : ""}`}>
         <div className="left-section">
           <div className="logo-container">
             <img src={appLogo} alt="Logo" />
           </div>
           <ul className="navigation-links">
-            {navigationLinks.map(({ name, link }) => (
-              <li key={name}>
-                <Link to={link}>{name}</Link>
+            {navigationLinks.map(({ name, link, onClick }) => (
+              <li key={name} onClick={onClick ? onClick : null}>
+                {onClick ? (
+                  <a href={link}>{name}</a>
+                ) : (
+                  <Link to={link}>{name}</Link>
+                )}
               </li>
             ))}
           </ul>
         </div>
         <div className="right-section">
-          <button
-            onClick={() => {
-              signOut(firebaseAuth)
-                .then(() => {
-                  alert("Logged out successfully");
-                })
-                .catch((error) => {
-                  // Handle errors here, such as a failed sign-out process
-                  console.error("Sign out error", error);
-                });
-            }}
-          >
+          {isUserLoggedIn && (
+            <>
+              <button onClick={toggleSidebar}>
+                <FaBars style={{ color: "white" }} />
+              </button>
+              {sidebarOpen && (
+                <div className="sidebar">
+                  {sideLinks.map(({ name, link }) => (
+                    <Link key={name} to={link} onClick={toggleSidebar}>
+                      {name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+          <button onClick={handleSignOut}>
             <FaPowerOff style={{ color: "#f34242" }} />
           </button>
-
-          <button onClick={toggleSidebar}>
-            <FaBars style={{ color: "white" }} />
-          </button>
-          {sidebarOpen && (
-            <div className="sidebar">
-              {sideLinks.map(({ name, link }) => (
-                <Link key={name} to={link} onClick={toggleSidebar}>
-                  {name}
-                </Link>
-              ))}
-            </div>
-          )}
         </div>
       </nav>
     </HeaderContainer>
   );
 }
 
-const HeaderContainer = styled.div`
+const HeaderContainer = styled(Container)`
+  padding-left: 0 !important;
+  padding-right: 0 !important;
   .scrolled {
     background-color: black;
   }
@@ -87,18 +110,19 @@ const HeaderContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 4rem;
+    padding: 0 2rem;
     transition: background-color 0.3s ease-in-out;
     z-index: 100;
 
     .left-section {
       display: flex;
       align-items: center;
-      gap: 2rem;
+      gap: 0.5rem;
 
       .logo-container {
         img {
           height: 4rem;
+          padding-right: 2rem;
         }
       }
 
@@ -158,7 +182,7 @@ const HeaderContainer = styled.div`
           border-radius: 4px;
 
           &:hover {
-            background-color: #ffebeb;
+            background-color: #ff000042;
             color: #d12f2f;
           }
         }

@@ -1,8 +1,7 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth }  from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
-// Your web app's Firebase configuration
+// My apps Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCOSrT75M4tlp-oQjpvOoyF9zNrWQ3n4Gc",
   authDomain: "webflix-fyp.firebaseapp.com",

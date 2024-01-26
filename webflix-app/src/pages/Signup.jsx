@@ -48,11 +48,11 @@ function Signup() {
         <div className="body flex column a-center j-center">
           <div className="text flex column">
             <h1>Join the Ultimate Movie Experience!</h1>
-            <h5>Explore a vast library of movies, TV shows, and much more.</h5>
-            <h6>
+            <h4>Explore a vast library of movies, TV shows, and much more.</h4>
+            <h5>
               To unlock all features enter your email and start your cinematic
               journey!
-            </h6>
+            </h5>
           </div>
           <div className="form">
             <input
@@ -115,9 +115,15 @@ const Container = styled.div`
         gap: 1rem;
         text-align: center;
         font-size: 2rem;
+        color: white;
 
         h1 {
-          padding: 0 25rem;
+          font-size: 3rem;
+        }
+
+        h5,
+        h6 {
+          color: inherit;
         }
       }
 
@@ -167,7 +173,11 @@ const Container = styled.div`
         width: 11rem;
         height: 3rem;
         background-color: #e50914;
-        margin: .5rem;
+        margin: 0.5rem;
+      }
+
+      p {
+        color: white;
       }
     }
   }
