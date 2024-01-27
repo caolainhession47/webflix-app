@@ -23,14 +23,14 @@ export default function Netflix() {
     <div>
       <Navbar isScrolled={isScrolled} />
       <Banner />
-      {/* <Row
-        title="POPULAR MOVIES"
+      <Row
+        title="Popular Movies"
         fetchUrl={requests.fetchPopularMovies}
         isLargeRow
       />
-      <Row title="TOP RATED MOVIES" fetchUrl={requests.fetchTopRated} />
-      <Row title="POPULAR SERIES" fetchUrl={requests.fetchPopularTV} />
-      <Row title="TOP RATED SERIES" fetchUrl={requests.fetchTopRatedTV} /> */}
+      <Row title="Top Rated Movies" fetchUrl={requests.fetchTopRated} />
+      <Row title="Popular Series" fetchUrl={requests.fetchPopularTV} />
+      <Row title="Top Rated Series" fetchUrl={requests.fetchTopRatedTV} />
     </div>
   );
 }

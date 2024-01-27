@@ -8,6 +8,8 @@ import { Button } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from "@mui/icons-material/Info";
+import CircularProgress from "@mui/material/CircularProgress";
+import FullPageLoader from "./FullPageLoader";
 
 function Banner() {
   const [movie, setMovie] = useState(null);
@@ -49,7 +51,7 @@ function Banner() {
   }, []);
 
   if (!movie) {
-    return <p></p>;
+    return <FullPageLoader />;
   }
 
   return (
@@ -83,6 +85,7 @@ function Banner() {
             size="small"
             sx={{
               backgroundColor: "#E82128",
+              fontWeight: "bold",
               "&:hover": {
                 backgroundColor: "#C00000",
               },
@@ -91,6 +94,7 @@ function Banner() {
           >
             Play Trailer
           </Button>
+
           <IconButton
             color="primary"
             sx={{
@@ -185,10 +189,24 @@ const StyledContainer = styled(Container)`
     background-image: linear-gradient(
       180deg,
       transparent,
-      rgba(37, 37, 37, 0.61),
-      #111
+      rgba(37, 37, 37, 0.3) 30%,
+      rgba(37, 37, 37, 0.7) 70%,
+      #111 100%
     );
   }
 `;
+
+// const FullScreenLoader = styled.div`
+//   width: 100vw;
+//   height: 100vh;
+//   background-color: black;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   z-index: 1500;
+// `;
 
 export default Banner;
