@@ -31,6 +31,45 @@ export default function Netflix() {
       <Row title="Top Rated Movies" fetchUrl={requests.fetchTopRated} />
       <Row title="Popular Series" fetchUrl={requests.fetchPopularTV} />
       <Row title="Top Rated Series" fetchUrl={requests.fetchTopRatedTV} />
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
+      <h1>f</h1>
     </div>
   );
 }
