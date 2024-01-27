@@ -79,7 +79,12 @@ function Signup() {
               </button>
             )}
             {showPassword && (
-              <button type="submit" id="SignUp" onClick={handleSignIn}>
+              <button
+                type="submit"
+                id="SignUp"
+                className="hover-effect"
+                onClick={handleSignIn}
+              >
                 Sign Up
               </button>
             )}
@@ -174,6 +179,11 @@ const Container = styled.div`
         height: 3rem;
         background-color: #e50914;
         margin: 0.5rem;
+        transition: background-color 0.3s;
+      }
+
+      #SignUp:hover {
+        background-color: #c50712;
       }
 
       p {

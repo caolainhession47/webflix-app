@@ -8,10 +8,11 @@ import { Button } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from "@mui/icons-material/Info";
-import CircularProgress from "@mui/material/CircularProgress";
 import FullPageLoader from "./FullPageLoader";
+import { useNavigate } from "react-router-dom";
 
 function Banner() {
+  const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
   const [genres, setGenres] = useState([]);
 
@@ -91,6 +92,7 @@ function Banner() {
               },
             }}
             startIcon={<PlayArrowIcon />}
+            onClick={() => navigate("/player")}
           >
             Play Trailer
           </Button>
@@ -195,18 +197,5 @@ const StyledContainer = styled(Container)`
     );
   }
 `;
-
-// const FullScreenLoader = styled.div`
-//   width: 100vw;
-//   height: 100vh;
-//   background-color: black;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   z-index: 1500;
-// `;
 
 export default Banner;

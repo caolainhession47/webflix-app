@@ -129,6 +129,7 @@ const HeaderContainer = styled(Container)`
       .navigation-links {
         display: flex;
         list-style: none;
+        padding-top: 1.1rem;
         gap: 2rem;
         align-items: center;
 

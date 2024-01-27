@@ -61,7 +61,7 @@ export default function Login() {
               />
               <button onClick={handleSubmit}>Login to your account</button>
             </div>
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p style={{ color: "yellow" }}>{error}</p>}
           </div>
         </div>
       </div>
@@ -71,6 +71,9 @@ export default function Login() {
 
 const StyledContainer = styled.div`
   position: relative;
+  .title {
+    font-size: 2.4rem;
+  }
   .content {
     position: absolute;
     top: 0;
@@ -98,7 +101,7 @@ const StyledContainer = styled.div`
         .input-group {
           display: flex;
           flex-direction: column;
-          gap: 2rem;
+          gap: 1.2rem;
           input {
             padding: 0.5rem 1rem;
             width: 20.5vw;
@@ -113,6 +116,10 @@ const StyledContainer = styled.div`
             font-weight: bolder;
             font-size: 1.05rem;
             width: 20.5vw;
+            transition: background-color 0.3s; /* Add transition */
+          }
+          button:hover {
+            background-color: #c50712; /* Darker shade of red on hover */
           }
         }
       }
