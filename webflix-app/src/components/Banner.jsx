@@ -55,6 +55,10 @@ function Banner() {
     return <FullPageLoader />;
   }
 
+  const handlePlayTrailer = () => {
+    navigate(`/player/${movie.id}`);
+  };
+
   return (
     <StyledContainer fluid>
       <div
@@ -65,10 +69,14 @@ function Banner() {
           backgroundPosition: "center center",
         }}
       >
+        {/* Banner contents */}
         <div className="bcontents">
+          {/* Title */}
           <h1 className="btitle">
             {movie?.title || movie?.name || movie?.original_name}
           </h1>
+
+          {/* Rating and Genres */}
           <div className="rating-genres-container">
             <Rating value={movie.vote_average} />
             <div className="genre-tags">
@@ -79,7 +87,11 @@ function Banner() {
               ))}
             </div>
           </div>
+
+          {/* Description */}
           <h1 className="bdescription">{truncate(movie?.overview, 270)}</h1>
+
+          {/* Play Trailer Button */}
           <Button
             variant="contained"
             color="primary"
@@ -92,15 +104,15 @@ function Banner() {
               },
             }}
             startIcon={<PlayArrowIcon />}
-            onClick={() => navigate("/player")}
+            onClick={handlePlayTrailer}
           >
             Play Trailer
           </Button>
 
+          {/* Info Button */}
           <IconButton
             color="primary"
             sx={{
-              // backgroundColor: "transparent",
               borderRadius: "50%",
               marginLeft: "10px",
               "&:hover": {
@@ -121,6 +133,7 @@ function Banner() {
     </StyledContainer>
   );
 }
+
 const StyledContainer = styled(Container)`
   width: 100%;
   padding: 0;

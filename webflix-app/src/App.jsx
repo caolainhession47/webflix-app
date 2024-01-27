@@ -33,7 +33,7 @@ export default function App() {
         <Route exact path="/signup" element={<Signup />} />
         <Route exact path="/watchlist" element={<Watchlist />} />
         <Route exact path="/reviews" element={<Reviews />} />
-        <Route exact path="/player" element={<Player />} />
+        <Route path="/player/:movieId" element={<Player />} />
       </Routes>
     </BrowserRouter>
   );
