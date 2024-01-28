@@ -110,7 +110,7 @@ const HeaderContainer = styled(Container)`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 2rem;
+    padding: 0 2rem 0 3rem;
     transition: background-color 0.3s ease-in-out;
     z-index: 100;
 
@@ -130,12 +130,17 @@ const HeaderContainer = styled(Container)`
         display: flex;
         list-style: none;
         padding-top: 1.1rem;
+        padding-left: 0.2rem;
         gap: 2rem;
         align-items: center;
 
         li a {
           color: white;
           text-decoration: none;
+
+          &:hover {
+            color: #f34242;
+          }
         }
       }
     }

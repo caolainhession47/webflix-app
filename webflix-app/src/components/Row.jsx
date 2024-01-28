@@ -51,15 +51,8 @@ function Row({ title, fetchUrl, isLargeRow }) {
                     alt={movie.name || movie.title}
                   />
                 </OverlayTrigger>
-                <div className="r">
-                  <Rating
-                    value={movie.vote_average}
-                    style={{
-                      position: "absolute",
-                      bottom: "5px",
-                      left: "5px",
-                    }}
-                  />
+                <div className="rating-container">
+                  <Rating value={movie.vote_average} />
                 </div>
               </div>
             </div>
@@ -100,10 +93,16 @@ const StyledContainer = styled.div`
   .row_posterLarge {
     max-height: 250px;
   }
-  .r {
+  .rating-container {
     position: absolute;
     bottom: 5px;
     left: 5px;
+    background-color: rgba(0, 0, 0, 0.35);
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
   }
 `;
 

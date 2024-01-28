@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Banner from "../components/Banner";
 import requests from "../axios/requests";
 import Row from "../components/Row";
+import Footer from "../components/Footer";
 
 export default function Netflix() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -31,45 +32,7 @@ export default function Netflix() {
       <Row title="Top Rated Movies" fetchUrl={requests.fetchTopRated} />
       <Row title="Popular Series" fetchUrl={requests.fetchPopularTV} />
       <Row title="Top Rated Series" fetchUrl={requests.fetchTopRatedTV} />
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
-      <h1>f</h1>
+      <Footer />
     </div>
   );
 }
