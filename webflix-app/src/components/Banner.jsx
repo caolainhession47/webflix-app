@@ -55,6 +55,10 @@ function Banner() {
     return <FullPageLoader />;
   }
 
+  const handleInfoClick = () => {
+    navigate(`/media/${movie.id}`);
+  };
+
   const handlePlayTrailer = () => {
     navigate(`/player/${movie.id}`);
   };
@@ -119,6 +123,7 @@ function Banner() {
                 backgroundColor: "darkred",
               },
             }}
+            onClick={handleInfoClick}
           >
             <InfoIcon
               sx={{
@@ -200,12 +205,12 @@ const StyledContainer = styled(Container)`
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 7.4rem;
+    height: 7rem;
     background-image: linear-gradient(
       180deg,
       transparent,
-      rgba(37, 37, 37, 0.3) 30%,
-      rgba(37, 37, 37, 0.7) 70%,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 100%,
       #111 100%
     );
   }

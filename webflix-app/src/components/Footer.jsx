@@ -44,7 +44,7 @@ const StyledFooter = styled.footer`
   .footer-content {
     display: flex;
     gap: 3rem;
-    padding-left: 47rem;
+    padding-left: 50rem;
 
     a {
       color: white;
