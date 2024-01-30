@@ -10,6 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import InfoIcon from "@mui/icons-material/Info";
 import FullPageLoader from "./FullPageLoader";
 import { useNavigate } from "react-router-dom";
+import Tooltip from "@mui/material/Tooltip";
 
 function Banner() {
   const navigate = useNavigate();
@@ -56,11 +57,13 @@ function Banner() {
   }
 
   const handleInfoClick = () => {
-    navigate(`/media/${movie.id}`);
+    const mediaType = movie?.media_type === "movie" ? "movie" : "tv";
+    navigate(`/media/${mediaType}/${movie.id}`);
   };
 
   const handlePlayTrailer = () => {
-    navigate(`/player/${movie.id}`);
+    const mediaType = movie?.media_type === "tv" ? "tv" : "movie";
+    navigate(`/player/${mediaType}/${movie.id}`);
   };
 
   return (
@@ -114,24 +117,26 @@ function Banner() {
           </Button>
 
           {/* Info Button */}
-          <IconButton
-            color="primary"
-            sx={{
-              borderRadius: "50%",
-              marginLeft: "10px",
-              "&:hover": {
-                backgroundColor: "darkred",
-              },
-            }}
-            onClick={handleInfoClick}
-          >
-            <InfoIcon
+          <Tooltip title="More Info">
+            <IconButton
+              color="primary"
               sx={{
-                fontSize: "36px",
-                color: "#E82128",
+                borderRadius: "50%",
+                marginLeft: "10px",
+                "&:hover": {
+                  backgroundColor: "darkred",
+                },
               }}
-            />
-          </IconButton>
+              onClick={handleInfoClick}
+            >
+              <InfoIcon
+                sx={{
+                  fontSize: "36px",
+                  color: "#E82128",
+                }}
+              />
+            </IconButton>
+          </Tooltip>
         </div>
         <div className="fadebottom"></div>
       </div>
@@ -175,11 +180,7 @@ const StyledContainer = styled(Container)`
     left: 0;
     height: 100%;
     width: 30rem;
-    background-image: linear-gradient(
-      to right,
-      rgba(0, 0, 0, 0.9),
-      transparent
-    );
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 1), transparent);
   }
   .bcontents {
     margin-left: 60px;

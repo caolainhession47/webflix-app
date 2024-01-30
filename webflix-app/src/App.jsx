@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
 import Challenges from "./pages/Challenges";
 import Favourites from "./pages/Favourites";
 import Home from "./pages/Home";
@@ -23,7 +22,7 @@ export default function App() {
         <Route exact path="/challenges" element={<Challenges />} />
         <Route exact path="/favourites" element={<Favourites />} />
         <Route exact path="/" element={<Home />} />
-        <Route exact path="/media" element={<Media />} />
+        <Route path="/media/:mediaType/:mediaId" element={<Media />} />
         <Route exact path="/movies" element={<Movies />} />
         <Route exact path="/person" element={<Person />} />
         <Route exact path="/recommendations" element={<Recommendations />} />
@@ -33,7 +32,7 @@ export default function App() {
         <Route exact path="/signup" element={<Signup />} />
         <Route exact path="/watchlist" element={<Watchlist />} />
         <Route exact path="/reviews" element={<Reviews />} />
-        <Route path="/player/:movieId" element={<Player />} />
+        <Route path="/player/:mediaType/:mediaId" element={<Player />} />
       </Routes>
     </BrowserRouter>
   );

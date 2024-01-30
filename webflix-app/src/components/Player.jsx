@@ -1,38 +1,60 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "../axios/axios";
 import requests from "../axios/requests";
 import FullPageLoader from "./FullPageLoader";
 
 function Player() {
-  const { movieId } = useParams();
+  const { mediaType, mediaId } = useParams();
   const [trailerUrl, setTrailerUrl] = useState("");
   const iframeRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    let isCancelled = false;
+
     async function fetchTrailer() {
       try {
+        // Construct the correct URL based on mediaType
+        const urlEndpoint =
+          mediaType === "movie"
+            ? requests.fetchMovieVideos(mediaId)
+            : requests.fetchTvShowVideos(mediaId);
+
         const response = await axios.get(
-          `https://api.themoviedb.org/3${requests.fetchMovieVideos(movieId)}`
+          `https://api.themoviedb.org/3${urlEndpoint}`
         );
+        console.log(response.data);
         const trailerKey = response.data.results.find(
           (video) => video.type === "Trailer"
         )?.key;
+
         if (trailerKey) {
           setTrailerUrl(
             `https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=0`
           );
+        } else {
+          if (!isCancelled) {
+            alert("No trailer found for this show!");
+            navigate(`/media/${mediaType}/${mediaId}`);
+          }
         }
       } catch (error) {
         console.error("Error fetching trailer", error);
+        alert("Error fetching trailer", error);
+        navigate(`/media/${mediaType}/${mediaId}`);
       }
     }
 
-    if (movieId) {
+    if (mediaId) {
       fetchTrailer();
     }
-  }, [movieId]);
+    //setting flag so alert will not be displayed twice
+    return () => {
+      isCancelled = true;
+    };
+  }, [mediaType, mediaId, navigate]);
 
   useEffect(() => {
     if (iframeRef.current && trailerUrl) {
@@ -52,7 +74,7 @@ function Player() {
           src={trailerUrl}
           ref={iframeRef}
           width="100%"
-          title="Movie Trailer"
+          title={`${mediaType} Trailer`}
           frameBorder="0"
           allow="autoplay; encrypted-media"
           allowFullScreen

@@ -1,5 +1,4 @@
 import { Box, Typography, CircularProgress } from "@mui/material";
-
 const Rating = ({ value }) => {
   return (
     <Box
