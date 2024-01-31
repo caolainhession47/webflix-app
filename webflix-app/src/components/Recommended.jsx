@@ -100,7 +100,7 @@ const StyledContainer = styled(Container)`
     display: flex;
     overflow-y: hidden;
     overflow-x: scroll;
-    padding: 0px 20px;
+    padding: 5px 20px 7px;
     margin-left: -20px;
     &::-webkit-scrollbar {
       display: none;
