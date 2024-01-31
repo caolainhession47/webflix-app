@@ -63,10 +63,10 @@ const Images = ({ mediaId, mediaType }) => {
 };
 
 const StyledContainer = styled(Container)`
-  margin-top: 1.5rem;
+  margin-top: 3rem;
   .images-title {
     color: white;
-    margin-bottom: 12px;
+    margin-bottom: 17px;
     text-align: flex-start;
     position: relative;
     font-size: 2rem;
@@ -76,9 +76,9 @@ const StyledContainer = styled(Container)`
     content: "";
     position: absolute;
     left: 0;
-    bottom: -5px;
+    bottom: -10px;
     margin-bottom: auto.5rem;
-    width: 7rem;
+    width: 7.5rem;
     height: 5px;
     background-color: #e82128;
   }
@@ -86,10 +86,10 @@ const StyledContainer = styled(Container)`
   .image-container {
     position: relative;
     overflow: hidden;
-    height: 555px;
+    height: 600px;
     img {
       width: 100%;
-      height: 100%;
+      height: auto;
       object-fit: cover;
       object-position: center;
     }

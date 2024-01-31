@@ -68,7 +68,7 @@ const Videos = ({ mediaId, mediaType }) => {
 };
 
 const StyledContainer = styled(Container)`
-  margin-top: -5px;
+  margin-top: 0px;
   .videos-title {
     color: white;
     margin-bottom: 12px;
@@ -91,17 +91,17 @@ const StyledContainer = styled(Container)`
   .video-container {
     position: relative;
     overflow: hidden;
-    height: 555px;
-    margin: 0px;
+    height: 600px;
     padding: 0px;
     overflow: hidden;
+    padding-top: 56.3%;
     iframe {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      bottom: 0;
+      object-fit: cover;
     }
   }
 `;

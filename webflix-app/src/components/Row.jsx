@@ -99,7 +99,7 @@ const StyledContainer = styled.div`
   .row_poster {
     max-height: 100px;
     object-fit: contain;
-    transition: transform 380ms;
+    transition: transform 333ms;
     cursor: pointer;
     &:hover {
       transform: scale(1.08);

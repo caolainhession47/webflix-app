@@ -20,7 +20,7 @@ const requests = {
   fetchCast: (mediaType, mediaId) => `/${mediaType}/${mediaId}/credits?api_key=${API_KEY}`,
   fetchMovieBackdrops: (movieId) => `/movie/${movieId}/images?api_key=${API_KEY}&include_image_language=en,null`,
   fetchTvShowBackdrops: (tvShowId) => `/tv/${tvShowId}/images?api_key=${API_KEY}&include_image_language=en,null`,
-
+  fetchRecommendations: (mediaType, mediaId) => `/${mediaType}/${mediaId}/similar?api_key=${API_KEY}&language=en-US`,
 };
 
 export default requests;

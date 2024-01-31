@@ -4,6 +4,9 @@ import Navbar from "../components/Navbar";
 import Videos from "../components/Videos";
 import { useParams } from "react-router-dom";
 import Images from "../components/Images";
+import ReviewsComp from "../components/ReviewsComp";
+import Recommended from "../components/Recommended";
+import Footer from "../components/Footer";
 
 export default function Media() {
   const { mediaType, mediaId } = useParams();
@@ -25,6 +28,9 @@ export default function Media() {
       <MediaBanner />
       <Videos mediaType={mediaType} mediaId={mediaId} />
       <Images mediaType={mediaType} mediaId={mediaId} />
+      <ReviewsComp />
+      <Recommended mediaType={mediaType} mediaId={mediaId} />
+      <Footer />
     </div>
   );
 }

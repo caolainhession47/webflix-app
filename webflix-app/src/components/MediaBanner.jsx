@@ -181,6 +181,9 @@ const StyledContainer = styled(Container)`
         height: 600px;
         border-radius: 10px;
       }
+      @media (min-width: 2400px) {
+        padding-left: 39.5rem;
+      }
     }
 
     .banner-contents {

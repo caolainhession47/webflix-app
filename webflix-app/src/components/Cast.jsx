@@ -92,7 +92,7 @@ const StyledCarousel = styled(Container)`
     left: 0;
     bottom: -5px;
     margin-bottom: auto.5rem;
-    width: 7rem;
+    width: 5rem;
     height: 5px;
     background-color: #e82128;
   }
