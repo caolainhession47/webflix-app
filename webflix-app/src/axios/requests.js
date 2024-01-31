@@ -18,7 +18,8 @@ const requests = {
   fetchTvShowDetails: (tvShowId) => `/tv/${tvShowId}?api_key=${API_KEY}&language=en-US`,
   fetchTvShowVideos: (tvShowId) => `/tv/${tvShowId}/videos?api_key=${API_KEY}&language=en-US`,
   fetchCast: (mediaType, mediaId) => `/${mediaType}/${mediaId}/credits?api_key=${API_KEY}`,
-
+  fetchMovieBackdrops: (movieId) => `/movie/${movieId}/images?api_key=${API_KEY}&include_image_language=en,null`,
+  fetchTvShowBackdrops: (tvShowId) => `/tv/${tvShowId}/images?api_key=${API_KEY}&include_image_language=en,null`,
 
 };
 

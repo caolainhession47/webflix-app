@@ -53,7 +53,7 @@ const Videos = ({ mediaId, mediaType }) => {
           <Paper key={video.id} elevation={0} className="video-container">
             <iframe
               width="100%"
-              height="500px"
+              height="100%"
               src={`https://www.youtube.com/embed/${video.key}`}
               title={video.name}
               frameBorder="0"
@@ -92,12 +92,16 @@ const StyledContainer = styled(Container)`
     position: relative;
     overflow: hidden;
     height: 555px;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
     iframe {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
+      bottom: 0;
     }
   }
 `;

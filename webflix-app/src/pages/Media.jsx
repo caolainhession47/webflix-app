@@ -3,6 +3,7 @@ import MediaBanner from "../components/MediaBanner";
 import Navbar from "../components/Navbar";
 import Videos from "../components/Videos";
 import { useParams } from "react-router-dom";
+import Images from "../components/Images";
 
 export default function Media() {
   const { mediaType, mediaId } = useParams();
@@ -23,6 +24,7 @@ export default function Media() {
       <Navbar isScrolled={isScrolled} />
       <MediaBanner />
       <Videos mediaType={mediaType} mediaId={mediaId} />
+      <Images mediaType={mediaType} mediaId={mediaId} />
     </div>
   );
 }
