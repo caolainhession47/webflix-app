@@ -5,7 +5,7 @@ import requests from "../axios/requests";
 import Row from "../components/Row";
 import Footer from "../components/Footer";
 
-export default function Netflix() {
+export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {

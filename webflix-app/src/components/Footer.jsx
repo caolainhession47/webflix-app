@@ -23,7 +23,7 @@ const Footer = () => {
 };
 
 const StyledFooter = styled.footer`
-  background-color: black;
+  background-color: #000000;
   color: white;
   padding: 3rem 3rem 1rem 3rem;
   display: flex;

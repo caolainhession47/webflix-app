@@ -36,7 +36,7 @@ const CastCarousel = ({ mediaId, mediaType }) => {
 
   return (
     <StyledCarousel>
-      <h3 className="cast-title">Cast</h3>
+      <h2 className="cast-title">Cast</h2>
       <Carousel
         NextIcon={<ArrowForwardIosIcon />}
         PrevIcon={<ArrowBackIosIcon />}
@@ -77,9 +77,9 @@ const StyledCarousel = styled(Container)`
   width: 52rem;
   left: -20px;
   .cast-title {
-    font-size: 1.5em;
+    font-size: 2rem;
     color: white;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     padding-top: 0.5rem;
     margin-left: 2rem;
     text-align: left;
@@ -92,8 +92,8 @@ const StyledCarousel = styled(Container)`
     left: 0;
     bottom: -5px;
     margin-bottom: auto.5rem;
-    width: 6rem;
-    height: 3px;
+    width: 7rem;
+    height: 5px;
     background-color: #e82128;
   }
   .carousel-paper {
@@ -110,14 +110,15 @@ const StyledCarousel = styled(Container)`
     width: 8.6rem;
     height: 12rem;
     object-fit: cover;
-    border-radius: 0px;
+    border-radius: 6px;
+    padding: 0 0.2rem;
   }
 
   .cast-name {
     margin-top: 8px;
-    font-size: 0.9em;
+    font-size: 0.8em;
     color: white;
-    padding-left: 35px;
+    padding-left: 45px;
     margin-bottom: -25px;
   }
 `;

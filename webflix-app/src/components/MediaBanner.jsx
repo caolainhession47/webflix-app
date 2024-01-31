@@ -18,6 +18,7 @@ function MediaBanner() {
   const [media, setMedia] = useState(null);
   const [genres, setGenres] = useState([]);
   const navigate = useNavigate();
+  const [releaseYear, setReleaseYear] = useState("");
 
   useEffect(() => {
     async function fetchMedia() {
@@ -31,7 +32,19 @@ function MediaBanner() {
           `https://api.themoviedb.org/3${requestUrl}`
         );
         setMedia(response.data);
+        // Determine the field for release date based on media type
+        let dateField =
+          mediaType === "movie" ? "release_date" : "first_air_date";
 
+        // Fallback if one of them doesn't exist
+        let releaseDate =
+          response.data[dateField] ||
+          response.data["release_date"] ||
+          response.data["first_air_date"];
+
+        // Extract the year from the date
+        const year = releaseDate ? releaseDate.split("-")[0] : undefined;
+        setReleaseYear(year);
         if (response.data.genres) {
           setGenres(response.data.genres.map((genre) => genre.name));
         }
@@ -69,6 +82,7 @@ function MediaBanner() {
         </div>
         <div className="banner-contents">
           <h1 className="banner-title">{media.title || media.name}</h1>
+          {releaseYear && <span className="release-year">({releaseYear})</span>}
           <div className="rating-genres-container">
             <div className="rating-container">
               <Rating value={media.vote_average} />
@@ -121,6 +135,7 @@ function MediaBanner() {
 const StyledContainer = styled(Container)`
   width: 100%;
   padding: 0;
+
   .action-buttons {
     display: flex;
     align-items: center;
@@ -186,6 +201,16 @@ const StyledContainer = styled(Container)`
       .banner-title {
         font-size: 3rem;
         font-weight: 800;
+        padding-bottom: 0.3rem;
+        display: inline-block;
+      }
+
+      .release-year {
+        position: relative;
+        font-size: 1.5rem;
+        display: inline-block;
+        bottom: 5px;
+        margin-left: 1rem;
         padding-bottom: 0.3rem;
       }
 
