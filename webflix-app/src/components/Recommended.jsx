@@ -108,7 +108,7 @@ const StyledContainer = styled(Container)`
   }
   .row_poster_container {
     position: relative;
-    margin-right: 10px;
+    margin-right: 12px;
     cursor: pointer;
     transition: transform 333ms;
     &:hover {
@@ -119,7 +119,7 @@ const StyledContainer = styled(Container)`
     position: relative;
   }
   .row_poster {
-    max-height: 250px;
+    max-height: 375px;
   }
   .rating-container {
     position: absolute;

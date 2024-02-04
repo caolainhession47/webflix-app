@@ -24,7 +24,7 @@ export default function App() {
         <Route exact path="/" element={<Home />} />
         <Route path="/media/:mediaType/:mediaId" element={<Media />} />
         <Route exact path="/movies" element={<Movies />} />
-        <Route exact path="/person" element={<Person />} />
+        <Route exact path="/person/:personId" element={<Person />} />
         <Route exact path="/recommendations" element={<Recommendations />} />
         <Route exact path="/search" element={<Search />} />
         <Route exact path="/series" element={<Series />} />

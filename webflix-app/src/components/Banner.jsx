@@ -12,11 +12,12 @@ import FullPageLoader from "./FullPageLoader";
 import { useNavigate } from "react-router-dom";
 import Tooltip from "@mui/material/Tooltip";
 
-function Banner() {
+function Banner({ mediaType = "movie" }) {
   const navigate = useNavigate();
-  const [movie, setMovie] = useState(null);
+  const [content, setContent] = useState(null);
   const [genres, setGenres] = useState([]);
 
+  // Define the truncate function
   function truncate(string, n) {
     return string?.length > n ? string.substr(0, n) + "..." : string;
   }
@@ -32,38 +33,40 @@ function Banner() {
         );
 
         const request = await axios.get(
-          `https://api.themoviedb.org/3${requests.fetchTrending}`
+          `https://api.themoviedb.org/3${
+            mediaType === "movie"
+              ? requests.fetchTrendingMovies
+              : requests.fetchTrendingTVShows
+          }`
         );
-        const randomMovie =
+        const randomContent =
           request.data.results[
             Math.floor(Math.random() * request.data.results.length)
           ];
-        setMovie(randomMovie);
+        setContent(randomContent);
 
-        const movieGenres = randomMovie.genre_ids
+        const contentGenres = randomContent.genre_ids
           .map((id) => genreMap.get(id))
           .filter(Boolean);
-        setGenres(movieGenres);
+        setGenres(contentGenres);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
 
     fetchData();
-  }, []);
+  }, [mediaType]);
 
-  if (!movie) {
+  if (!content) {
     return <FullPageLoader />;
   }
 
   const handleInfoClick = () => {
-    const mediaType = movie?.media_type === "movie" ? "movie" : "tv";
-    navigate(`/media/${mediaType}/${movie.id}`);
+    navigate(`/media/${mediaType}/${content.id}`);
   };
 
   const handlePlayTrailer = () => {
-    const mediaType = movie?.media_type === "tv" ? "tv" : "movie";
-    navigate(`/player/${mediaType}/${movie.id}`);
+    navigate(`/player/${mediaType}/${content.id}`);
   };
 
   return (
@@ -72,20 +75,17 @@ function Banner() {
         className="banner"
         style={{
           backgroundSize: "cover",
-          backgroundImage: `url('https://image.tmdb.org/t/p/original/${movie?.backdrop_path}')`,
+          backgroundImage: `url('https://image.tmdb.org/t/p/original/${content?.backdrop_path}')`,
           backgroundPosition: "center center",
         }}
       >
-        {/* Banner contents */}
         <div className="bcontents">
-          {/* Title */}
           <h1 className="btitle">
-            {movie?.title || movie?.name || movie?.original_name}
+            {content?.title || content?.name || content?.original_name}
           </h1>
 
-          {/* Rating and Genres */}
           <div className="rating-genres-container">
-            <Rating value={movie.vote_average} />
+            <Rating value={content.vote_average} />
             <div className="genre-tags">
               {genres.map((genre, index) => (
                 <div key={index} className="genre-tag">
@@ -95,14 +95,14 @@ function Banner() {
             </div>
           </div>
 
-          {/* Description */}
-          <h1 className="bdescription">{truncate(movie?.overview, 270)}</h1>
+          <h1 className="bdescription">{truncate(content?.overview, 270)}</h1>
 
-          {/* Play Trailer Button */}
           <Button
             variant="contained"
             color="primary"
             size="small"
+            startIcon={<PlayArrowIcon />}
+            onClick={handlePlayTrailer}
             sx={{
               backgroundColor: "#E82128",
               fontWeight: "bold",
@@ -110,16 +110,14 @@ function Banner() {
                 backgroundColor: "#C00000",
               },
             }}
-            startIcon={<PlayArrowIcon />}
-            onClick={handlePlayTrailer}
           >
             Play Trailer
           </Button>
 
-          {/* Info Button */}
           <Tooltip title="More Info">
             <IconButton
               color="primary"
+              onClick={handleInfoClick}
               sx={{
                 borderRadius: "50%",
                 marginLeft: "10px",
@@ -127,7 +125,6 @@ function Banner() {
                   backgroundColor: "darkred",
                 },
               }}
-              onClick={handleInfoClick}
             >
               <InfoIcon
                 sx={{

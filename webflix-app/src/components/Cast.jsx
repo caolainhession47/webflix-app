@@ -7,9 +7,11 @@ import axios from "../axios/axios";
 import requests from "../axios/requests";
 import styled from "styled-components";
 import Container from "react-bootstrap/Container";
+import { useNavigate } from "react-router-dom";
 
 const CastCarousel = ({ mediaId, mediaType }) => {
   const [casts, setCasts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCast = async () => {
@@ -34,6 +36,10 @@ const CastCarousel = ({ mediaId, mediaType }) => {
     castGroups.push(casts.slice(i, i + 5));
   }
 
+  const handleCastClick = (castId) => {
+    navigate(`/person/${castId}`); // Navigate to the person page with the cast member's ID
+  };
+
   return (
     <StyledCarousel>
       <h2 className="cast-title">Cast</h2>
@@ -54,7 +60,10 @@ const CastCarousel = ({ mediaId, mediaType }) => {
             <Grid container spacing={2}>
               {group.map((cast, index) => (
                 <Grid item xs={2} key={index}>
-                  <div className="image-container">
+                  <div
+                    className="image-container"
+                    onClick={() => handleCastClick(cast.id)}
+                  >
                     <img
                       src={`https://image.tmdb.org/t/p/w500${cast.profile_path}`}
                       alt={cast.name}
@@ -112,6 +121,12 @@ const StyledCarousel = styled(Container)`
     object-fit: cover;
     border-radius: 6px;
     padding: 0 0.2rem;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.03);
+    }
   }
 
   .cast-name {

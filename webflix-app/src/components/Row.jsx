@@ -84,29 +84,29 @@ const StyledContainer = styled.div`
     display: flex;
     overflow-y: hidden;
     overflow-x: scroll;
-    padding: 20px;
+    padding: 10px 20px;
     &::-webkit-scrollbar {
       display: none;
     }
   }
   .row_poster_container {
     position: relative;
-    margin-right: 10px;
+    margin-right: 12px;
   }
   .image-container {
     position: relative;
   }
   .row_poster {
-    max-height: 100px;
+    max-height: 150px;
     object-fit: contain;
-    transition: transform 333ms;
+    transition: transform 300ms;
     cursor: pointer;
     &:hover {
       transform: scale(1.08);
     }
   }
   .row_posterLarge {
-    max-height: 250px;
+    max-height: 375px;
   }
   .rating-container {
     position: absolute;
