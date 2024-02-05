@@ -31,8 +31,8 @@ const requests = {
   fetchPersonDetails: (personId) => `/person/${personId}?api_key=${API_KEY}`,
   fetchPersonKnownFor: (personId) => `/person/${personId}/movie_credits?api_key=${API_KEY}`,
   fetchPersonSocials: (personId) => `/person/${personId}/external_ids?api_key=${API_KEY}`,
-
-  
+  fetchSearch: (mediaType, query) => `/search/${mediaType}?query=${encodeURIComponent(query)}&api_key=${API_KEY}`,
+  fetchSearchPeople: (query) => `/search/person?query=${encodeURIComponent(query)}&api_key=${API_KEY}`,
 
 };
 

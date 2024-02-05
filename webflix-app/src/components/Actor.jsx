@@ -177,9 +177,8 @@ const StyledContainer = styled.div`
 
   .person-image {
     width: 359px;
-    height: auto;
+    height: 545px;
     border-radius: 10px;
-    object-fit: contain;
     margin-top: 6rem;
     margin-bottom: 1rem;
   }
