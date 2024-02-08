@@ -175,23 +175,24 @@ const StyledContainer = styled(Container)`
     left: 0;
     right: 0;
     bottom: 0;
-    height: 5rem;
     background-color: rgba(0, 0, 0, 1);
     color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    padding: 10px;
+    text-align: center;
+    transition: opacity 0.3s ease-in-out;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease-in-out;
-    z-index: 999;
+    z-index: 56;
   }
 
-  .title,
+  .title {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
   .year {
-    padding: 5px;
     text-align: center;
+    font-size: 0.9rem;
   }
 `;
 

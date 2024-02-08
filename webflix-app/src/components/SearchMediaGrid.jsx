@@ -22,7 +22,6 @@ const SearchMediaGrid = ({ searchResults }) => {
     <StyledContainer>
       <div className="media-grid">
         {searchResults.map((media, index) => {
-          // Determine the image path based on media type
           const imagePath = media.profile_path || media.poster_path;
           const isPerson = !!media.known_for_department;
 
@@ -119,7 +118,7 @@ const StyledContainer = styled.div`
   }
 
   .year {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 
   .rating-container {

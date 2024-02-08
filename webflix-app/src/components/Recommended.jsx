@@ -112,7 +112,7 @@ const StyledContainer = styled(Container)`
     cursor: pointer;
     transition: transform 333ms;
     &:hover {
-      transform: scale(1.08);
+      transform: scale(1.05);
     }
   }
   .image-container {

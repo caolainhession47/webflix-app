@@ -12,6 +12,8 @@ import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import Cast from "./Cast";
+import { firebaseAuth } from "../utils/firebase-config";
+import serverAxios from "../axios/serverAxios";
 
 function MediaBanner() {
   const { mediaType, mediaId } = useParams();
@@ -19,6 +21,15 @@ function MediaBanner() {
   const [genres, setGenres] = useState([]);
   const navigate = useNavigate();
   const [releaseYear, setReleaseYear] = useState("");
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = firebaseAuth.onAuthStateChanged((user) => {
+      setCurrentUser(user);
+    });
+
+    return unsubscribe; // Unsubscribe from the listener when the component unmounts
+  }, []);
 
   useEffect(() => {
     async function fetchMedia() {
@@ -42,7 +53,6 @@ function MediaBanner() {
           response.data["release_date"] ||
           response.data["first_air_date"];
 
-        // Extract the year from the date
         const year = releaseDate ? releaseDate.split("-")[0] : undefined;
         setReleaseYear(year);
         if (response.data.genres) {
@@ -66,6 +76,80 @@ function MediaBanner() {
 
   const backdropUrl = `https://image.tmdb.org/t/p/original/${media.backdrop_path}`;
   const posterUrl = `https://image.tmdb.org/t/p/w500/${media.poster_path}`;
+
+  const handleAddToWatchlist = async () => {
+    if (!currentUser || !currentUser.email) {
+      alert("Please log in to add to your watchlist");
+      return;
+    }
+
+    const itemToAdd = {
+      mediaId: media.id, // Corrected from 'moediaId' to 'mediaId'
+      mediaType: mediaType, // 'movie' or 'tv' based on the mediaType state
+      title: media.title || media.name,
+      posterPath: media.poster_path,
+      releaseDate: media.release_date || media.first_air_date,
+      rating: media.vote_average,
+    };
+
+    try {
+      const response = await serverAxios.post("/api/users/watchlist/add", {
+        email: currentUser.email,
+        movie: itemToAdd,
+      });
+
+      if (response.data.msg === "Movie already in watchlist.") {
+        alert("Movie already in watchlist!");
+      } else {
+        console.log(response.data);
+        alert("Added to watchlist successfully!");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        alert(error.response.data.msg);
+      } else {
+        console.error("Error adding to watchlist:", error);
+        alert("Failed to add to watchlist.");
+      }
+    }
+  };
+
+  const handleAddToFavorites = async () => {
+    if (!currentUser || !currentUser.email) {
+      alert("Please log in to add to your favorites");
+      return;
+    }
+
+    const itemToAdd = {
+      mediaId: media.id,
+      mediaType: mediaType, // 'movie' or 'tv' based on the mediaType state
+      title: media.title || media.name,
+      posterPath: media.poster_path,
+      releaseDate: media.release_date || media.first_air_date,
+      rating: media.vote_average,
+    };
+
+    try {
+      const response = await serverAxios.post("/api/users/favorites/add", {
+        email: currentUser.email, // Pass the user's email in the body
+        movie: itemToAdd,
+      });
+
+      if (response.data.msg === "Movie already in favorites.") {
+        alert("Movie already in favorites!");
+      } else {
+        console.log(response.data);
+        alert("Added to favorites successfully!");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        alert(error.response.data.msg);
+      } else {
+        console.error("Error adding to favorites:", error);
+        alert("Failed to add to favorites.");
+      }
+    }
+  };
 
   return (
     <StyledContainer fluid>
@@ -115,12 +199,12 @@ function MediaBanner() {
               Play Trailer
             </Button>
             <Tooltip title="Add to Watchlist">
-              <div className="watchlist">
+              <div className="watchlist" onClick={handleAddToWatchlist}>
                 <AddToQueueTwoToneIcon />
               </div>
             </Tooltip>
             <Tooltip title="Add to Favourites">
-              <div className="favourites">
+              <div className="favourites" onClick={handleAddToFavorites}>
                 <FavoriteTwoToneIcon />
               </div>
             </Tooltip>

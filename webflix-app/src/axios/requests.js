@@ -10,11 +10,6 @@ const requests = {
   fetchPopularTV: `/tv/popular?api_key=${API_KEY}&language=en-US`,
   fetchTopRatedTV: `/tv/top_rated?api_key=${API_KEY}&language=en-US`,
   fetchNowPlaying: `/movie/now_playing?api_key=${API_KEY}&language=en-US`,
-  fetchActionMovies: `/discover/movie?api_key=${API_KEY}&with_genres=28`,
-  fetchComedyMovies: `/discover/movie?api_key=${API_KEY}&with_genres=35`,
-  fetchHorrorMovies: `/discover/movie?api_key=${API_KEY}&with_genres=27`,
-  fetchRomanceMovies: `/discover/movie?api_key=${API_KEY}&with_genres=10749`,
-  fetchDocumentaries: `/discover/movie?api_key=${API_KEY}&with_genres=99`,
   fetchGenres: `/genre/movie/list?api_key=${API_KEY}&language=en-US`,
   //fetchMoviesByYear: (startYear, endYear) => `/discover/movie?api_key=${API_KEY}&primary_release_date.gte=${startYear}-01-01&primary_release_date.lte=${endYear}-12-31`,
   //fetchTVShowsByYear: (startYear, endYear) => `/discover/tv?api_key=${API_KEY}&first_air_date.gte=${startYear}-01-01&first_air_date.lte=${endYear}-12-31`,
@@ -37,3 +32,4 @@ const requests = {
 };
 
 export default requests;
+//
