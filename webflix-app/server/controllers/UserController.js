@@ -111,3 +111,57 @@ module.exports.removeFromWatchlist = async (req, res) => {
     res.status(500).json({ msg: "Error removing media from watchlist.", error });
   }
 };
+
+module.exports.updateTriviaResults = async (req, res) => {
+  const { email, correctAnswers, incorrectAnswers } = req.body;
+
+  try {
+    const user = await User.findOneAndUpdate(
+      { email },
+      {
+        $inc: {
+          'triviaResults.correct': correctAnswers,
+          'triviaResults.incorrect': incorrectAnswers,
+        },
+      },
+      { new: true, upsert: true } // upsert: true to create a new document if no document matches the query
+    );
+
+    if (user) {
+      res.json({ msg: "Trivia results updated.", triviaResults: user.triviaResults });
+    } else {
+      res.status(404).json({ msg: "User not found." });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: "Error updating trivia results.", error });
+  }
+};
+module.exports.getTriviaResults = async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const user = await User.findOne({ email }, "triviaResults"); 
+    if (user) {
+      res.json(user.triviaResults);
+    } else {
+      res.status(404).json({ msg: "User not found." });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: "Error fetching trivia results.", error });
+  }
+};
+
+module.exports.getLeaderboard = async (req, res) => {
+  try {
+    // Fetch all users' trivia results, sort them by correct answers in descending order
+    const leaderboard = await User.find({}, "triviaResults email").sort({"triviaResults.correct": -1});
+    if (leaderboard.length > 0) {
+      res.json(leaderboard);
+    } else {
+      res.status(404).json({ msg: "No trivia results found." });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: "Error fetching leaderboard.", error });
+  }
+};
+

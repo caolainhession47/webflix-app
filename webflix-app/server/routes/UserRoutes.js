@@ -9,5 +9,9 @@ router.get('/favorites/:email', UserController.getFavorites);
 router.put('/favorites/remove', UserController.removeFromFavorites);
 router.get('/watchlist/:email', UserController.getWatchlist);
 router.put('/watchlist/remove', UserController.removeFromWatchlist);
+router.put('/triviaResults/update', UserController.updateTriviaResults);
+router.get('/trivia/leaderboard', UserController.getLeaderboard);
+
+
 
 module.exports = router;

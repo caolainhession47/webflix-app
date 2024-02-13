@@ -14,12 +14,14 @@ import Signup from "./pages/Signup";
 import Reviews from "./pages/Reviews";
 import Watchlist from "./pages/Watchlist";
 import Player from "./components/Player";
+import Trivia from "./pages/Trivia";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/challenges" element={<Challenges />} />
+        <Route path="/challenges" element={<Challenges />} />
+        <Route path="/trivia/:challengeType" element={<Trivia />} />
         <Route exact path="/favourites" element={<Favourites />} />
         <Route exact path="/" element={<Home />} />
         <Route path="/media/:mediaType/:mediaId" element={<Media />} />

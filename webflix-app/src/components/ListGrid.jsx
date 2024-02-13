@@ -8,7 +8,6 @@ import Rating from "./Rating";
 import { firebaseAuth } from "../utils/firebase-config";
 
 const ListGrid = ({ mediaList, fetchList, removalEndpoint }) => {
-  // Add removalEndpoint prop
   const navigate = useNavigate();
   const base_url = "https://image.tmdb.org/t/p/original/";
 
@@ -23,7 +22,6 @@ const ListGrid = ({ mediaList, fetchList, removalEndpoint }) => {
     if (user && user.email) {
       try {
         await serverAxios.put(removalEndpoint, {
-          // Use dynamic removalEndpoint
           email: user.email,
           mediaId: mediaId,
         });

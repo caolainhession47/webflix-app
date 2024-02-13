@@ -84,8 +84,8 @@ function MediaBanner() {
     }
 
     const itemToAdd = {
-      mediaId: media.id, // Corrected from 'moediaId' to 'mediaId'
-      mediaType: mediaType, // 'movie' or 'tv' based on the mediaType state
+      mediaId: media.id,
+      mediaType: mediaType,
       title: media.title || media.name,
       posterPath: media.poster_path,
       releaseDate: media.release_date || media.first_air_date,
@@ -131,7 +131,7 @@ function MediaBanner() {
 
     try {
       const response = await serverAxios.post("/api/users/favorites/add", {
-        email: currentUser.email, // Pass the user's email in the body
+        email: currentUser.email,
         movie: itemToAdd,
       });
 

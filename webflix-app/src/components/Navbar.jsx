@@ -22,8 +22,18 @@ export default function Navbar({ isScrolled }) {
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   const handleSignOut = () => {
-    alert("User is logged out!");
-    signOut(firebaseAuth);
+    if (isUserLoggedIn) {
+      signOut(firebaseAuth)
+        .then(() => {
+          alert("User is logged out!");
+          navigate("/"); // Navigate to the home screen after successful sign out
+        })
+        .catch((error) => {
+          console.error("Error signing out:", error);
+        });
+    } else {
+      alert("No user is currently logged in.");
+    }
   };
 
   const handleLoginClick = (e) => {

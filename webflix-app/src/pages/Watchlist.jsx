@@ -38,7 +38,7 @@ const Watchlist = () => {
 
   useEffect(() => {
     const unsubscribe = firebaseAuth.onAuthStateChanged(setCurrentUser);
-    return unsubscribe; // Cleanup the subscription
+    return unsubscribe;
   }, []);
 
   return (
