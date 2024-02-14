@@ -165,3 +165,123 @@ module.exports.getLeaderboard = async (req, res) => {
   }
 };
 
+// Add a review
+module.exports.addReview = async (req, res) => {
+  const { email, mediaId, mediaType, title, posterPath, rating, reviewText } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ msg: "User not found." });
+    }
+
+    const review = {
+      mediaId,
+      mediaType,
+      title,
+      posterPath,
+      rating,
+      reviewText,
+    };
+
+    user.reviews.push(review);
+    await user.save();
+
+    res.status(201).json({ msg: "Review added successfully.", review });
+  } catch (error) {
+    console.error(error); 
+    res.status(500).json({ msg: "Error adding review.", error: error.message });
+  }
+};
+
+
+// Fetch all reviews for a specific media along with user's email
+module.exports.getReviewsByMediaId = async (req, res) => {
+  const { mediaId } = req.params;
+
+  try {
+    const reviews = await User.aggregate([
+      { $unwind: "$reviews" },
+      { $match: { "reviews.mediaId": mediaId } },
+      { $project: {
+          "email": 1, 
+          "review": "$reviews", 
+          "_id": 0
+        }
+      }
+    ]);
+
+    if (reviews.length > 0) {
+      const formattedReviews = reviews.map(({ email, review }) => ({
+        email, 
+        ...review // Spread the review document fields
+      }));
+      res.json(formattedReviews);
+    } else {
+      res.status(404).json({ msg: "No reviews found for this media." });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: "Error fetching reviews.", error });
+  }
+};
+
+
+// Remove review
+module.exports.removeReview = async (req, res) => {
+  const { email, mediaId } = req.body;
+
+  try {
+    // Find the user and pull the review from their reviews array that matches the mediaId
+    const updatedUser = await User.findOneAndUpdate(
+      { email },
+      { $pull: { reviews: { mediaId } } },
+      { new: true }
+    );
+
+    if (updatedUser) {
+      res.json({ msg: "Review removed successfully.", reviews: updatedUser.reviews });
+    } else {
+      res.status(404).json({ msg: "User not found." });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: "Error removing review.", error });
+  }
+};
+
+// Fetch all reviews made by a user
+module.exports.getUserReviews = async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const user = await User.findOne({ email }, "reviews");
+    if (user && user.reviews.length > 0) {
+      res.json(user.reviews);
+    } else {
+      res.status(404).json({ msg: "No reviews found for this user." });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: "Error fetching user reviews.", error });
+  }
+};
+
+// Update a review
+module.exports.updateReview = async (req, res) => {
+  const { email, mediaId, rating, reviewText } = req.body;
+
+  try {
+    let user = await User.findOne({ email });
+
+    let reviewIndex = user.reviews.findIndex(review => review.mediaId === mediaId);
+
+    if (reviewIndex !== -1) {
+      user.reviews[reviewIndex].rating = rating;
+      user.reviews[reviewIndex].reviewText = reviewText;
+      await user.save();
+      res.json({ msg: "Review updated successfully", review: user.reviews[reviewIndex] });
+    } else {
+      res.status(404).json({ msg: "Review not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: "Error updating review", error });
+  }
+};

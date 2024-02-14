@@ -4,6 +4,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 import { Container } from "react-bootstrap";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const movieGenres = [
   { name: "Top Rated", id: "top_rated" },
@@ -103,6 +104,7 @@ const GenresMenu = ({ onSelectGenre, pageType }) => {
               }}
             >
               {selectedGenreName}
+              <ArrowDropDownIcon sx={{ mr: "-10px" }} />
             </Button>
             <Menu {...bindMenu(popupState)}>
               {genres.map((genre) => (

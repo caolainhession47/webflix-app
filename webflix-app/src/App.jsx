@@ -15,6 +15,7 @@ import Reviews from "./pages/Reviews";
 import Watchlist from "./pages/Watchlist";
 import Player from "./components/Player";
 import Trivia from "./pages/Trivia";
+import ReviewsComp from "./components/ReviewsComp";
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
         <Route exact path="/watchlist" element={<Watchlist />} />
         <Route exact path="/reviews" element={<Reviews />} />
         <Route path="/player/:mediaType/:mediaId" element={<Player />} />
+        <Route path="/media/:mediaType/:mediaId" element={<ReviewsComp />} />
       </Routes>
     </BrowserRouter>
   );

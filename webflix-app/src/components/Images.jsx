@@ -86,7 +86,7 @@ const StyledContainer = styled(Container)`
   .image-container {
     position: relative;
     overflow: hidden;
-    height: 600px;
+    height: auto;
     img {
       width: 100%;
       height: auto;

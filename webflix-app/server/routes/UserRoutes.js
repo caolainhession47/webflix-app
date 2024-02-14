@@ -10,7 +10,13 @@ router.put('/favorites/remove', UserController.removeFromFavorites);
 router.get('/watchlist/:email', UserController.getWatchlist);
 router.put('/watchlist/remove', UserController.removeFromWatchlist);
 router.put('/triviaResults/update', UserController.updateTriviaResults);
+router.get('/triviaResults/:email', UserController.getTriviaResults);
 router.get('/trivia/leaderboard', UserController.getLeaderboard);
+router.get('/reviews/media/:mediaId', UserController.getReviewsByMediaId);
+router.get('/reviews/user/:email', UserController.getUserReviews);
+router.post('/reviews/add', UserController.addReview);
+router.put('/reviews/remove', UserController.removeReview);
+router.put('/reviews/update', UserController.updateReview);
 
 
 

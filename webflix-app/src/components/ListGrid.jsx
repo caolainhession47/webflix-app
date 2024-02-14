@@ -72,7 +72,6 @@ const ListGrid = ({ mediaList, fetchList, removalEndpoint }) => {
 const StyledContainer = styled(Container)`
   color: white;
   min-height: 100vh;
-  padding-top: 7.5rem;
   .media-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));

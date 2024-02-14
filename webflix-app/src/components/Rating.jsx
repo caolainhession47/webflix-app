@@ -1,5 +1,15 @@
 import { Box, Typography, CircularProgress } from "@mui/material";
 const Rating = ({ value }) => {
+  // Determine color based on value
+  let color;
+  if (value >= 7) {
+    color = "#0db816"; // Green color for ratings 7-10
+  } else if (value >= 5) {
+    color = "#FFBF00"; // Amber/dark yellow color for ratings 5-6.9
+  } else {
+    color = "#c72121"; // Red color for ratings below 5
+  }
+
   return (
     <Box
       sx={{
@@ -11,7 +21,7 @@ const Rating = ({ value }) => {
       <CircularProgress
         variant="determinate"
         value={value * 10}
-        color="success"
+        sx={{ color: color }}
         size={50}
       />
       <Box

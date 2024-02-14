@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import ListGrid from "../components/ListGrid";
 import serverAxios from "../axios/serverAxios";
 import { firebaseAuth } from "../utils/firebase-config";
+import styled from "styled-components";
 
 const Watchlist = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -42,17 +43,40 @@ const Watchlist = () => {
   }, []);
 
   return (
-    <div>
+    <StyledContainer>
       <Navbar isScrolled={isScrolled} />
+      <h2 className="bigtitle">Watchlist</h2>
       <ListGrid
         mediaList={watchlist}
         fetchList={fetchWatchlist}
         removalEndpoint="/api/users/watchlist/remove"
       />
-
       <Footer />
-    </div>
+    </StyledContainer>
   );
 };
+
+const StyledContainer = styled.div`
+  color: white;
+  .bigtitle {
+    margin-bottom: 12px;
+    text-align: flex-start;
+    position: relative;
+    font-size: 2rem;
+    padding-top: 7.5rem;
+    padding-left: 7.5rem;
+  }
+
+  .bigtitle::after {
+    content: "";
+    position: absolute;
+    left: 7.5rem;
+    bottom: -5px;
+    margin-bottom: auto.5rem;
+    width: 9.3rem;
+    height: 5px;
+    background-color: #e82128;
+  }
+`;
 
 export default Watchlist;

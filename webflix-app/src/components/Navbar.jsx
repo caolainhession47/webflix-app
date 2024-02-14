@@ -6,6 +6,11 @@ import appLogo from "../assets/logo.png";
 import { firebaseAuth } from "../utils/firebase-config";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import Container from "react-bootstrap/Container";
+import AddToQueueIcon from "@mui/icons-material/AddToQueue";
+import RateReviewIcon from "@mui/icons-material/RateReview";
+import ExtensionIcon from "@mui/icons-material/Extension";
+import MovieIcon from "@mui/icons-material/Movie";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 export default function Navbar({ isScrolled }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -54,11 +59,11 @@ export default function Navbar({ isScrolled }) {
   ];
 
   const sideLinks = [
-    { name: "Favourites", link: "/favourites" },
-    { name: "Watchlist", link: "/watchlist" },
-    { name: "Reviews", link: "/reviews" },
-    { name: "Challenges", link: "/challenges" },
-    { name: "Recommendations", link: "/recommendations" },
+    { name: "Favourites", link: "/favourites", Icon: FavoriteIcon },
+    { name: "Watchlist", link: "/watchlist", Icon: AddToQueueIcon },
+    { name: "Reviews", link: "/reviews", Icon: RateReviewIcon },
+    { name: "Challenges", link: "/challenges", Icon: ExtensionIcon },
+    { name: "Recommendations", link: "/recommendations", Icon: MovieIcon },
   ];
 
   return (
@@ -88,8 +93,9 @@ export default function Navbar({ isScrolled }) {
               </button>
               {sidebarOpen && (
                 <div className="sidebar">
-                  {sideLinks.map(({ name, link }) => (
+                  {sideLinks.map(({ name, link, Icon }) => (
                     <Link key={name} to={link} onClick={toggleSidebar}>
+                      <Icon style={{ marginRight: "10px" }} />
                       {name}
                     </Link>
                   ))}
@@ -187,6 +193,7 @@ const HeaderContainer = styled(Container)`
         z-index: 200;
         padding: 0.3rem;
         border-radius: 8px;
+        min-width: 220px;
 
         a {
           display: block;
