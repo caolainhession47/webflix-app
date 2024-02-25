@@ -17,7 +17,6 @@ router.get('/reviews/user/:email', UserController.getUserReviews);
 router.post('/reviews/add', UserController.addReview);
 router.put('/reviews/remove', UserController.removeReview);
 router.put('/reviews/update', UserController.updateReview);
-
-
+router.get('/reviews/highly-rated/:email', UserController.getHighlyRatedMovies);
 
 module.exports = router;

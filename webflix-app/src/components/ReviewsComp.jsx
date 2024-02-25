@@ -11,14 +11,13 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 function ReviewsComp({ mediaId, mediaType, mediaTitle, posterPath }) {
   const [reviews, setReviews] = useState([]);
   const [reviewText, setReviewText] = useState("");
-  const [rating, setRating] = useState(2); // Initialize with a default rating value
+  const [rating, setRating] = useState(2); // Start with 2 stars
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     const unsubscribe = firebaseAuth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
     });
-
     return () => unsubscribe();
   }, []);
 
@@ -27,72 +26,56 @@ function ReviewsComp({ mediaId, mediaType, mediaTitle, posterPath }) {
       const response = await serverAxios.get(
         `/api/users/reviews/media/${mediaId}`
       );
-      if (response.status === 200) {
-        setReviews(response.data);
-      } else if (response.status === 404) {
-        console.log("No reviews for this media");
-        setReviews([]);
-      }
+      setReviews(response.data || []);
     } catch (error) {
-      if (error.response && error.response.status === 404) {
-        console.log("No reviews for this media");
-        setReviews([]);
-      } else {
-        console.error("Error fetching reviews:", error);
-      }
+      console.error("Error fetching reviews:", error);
+      setReviews([]);
     }
   }, [mediaId]);
 
+  useEffect(() => {
+    fetchReviews();
+  }, [fetchReviews, mediaId]);
+
   const handleReviewSubmit = async () => {
-    if (user && reviewText.trim() && rating > 0) {
+    if (!user || !reviewText.trim() || rating <= 0) return;
+
+    const reviewData = {
+      email: user.email,
+      mediaId,
+      mediaType,
+      title: mediaTitle,
+      posterPath,
+      rating,
+      reviewText,
+    };
+
+    try {
       // Check if the user has already reviewed this media
-      const existingReviewIndex = reviews.findIndex(
-        (review) => review.email === user.email && review.mediaId === mediaId
+      const existingReview = reviews.find(
+        (review) => review.email === user.email
       );
-
-      if (existingReviewIndex !== -1) {
-        // User has already reviewed this media, update the existing review
-        const updatedReviews = [...reviews];
-        updatedReviews[existingReviewIndex].rating = rating;
-        updatedReviews[existingReviewIndex].reviewText = reviewText;
-        try {
-          await serverAxios.put(
-            "/api/users/reviews/update",
-            updatedReviews[existingReviewIndex]
-          );
-          setReviews(updatedReviews);
-          setReviewText("");
-          setRating(0);
-        } catch (error) {
-          console.error(
-            "Error updating review:",
-            error.response ? error.response.data : error
-          );
-        }
+      let response;
+      if (existingReview) {
+        // Update existing review
+        response = await serverAxios.put(
+          "/api/users/reviews/update",
+          reviewData
+        );
       } else {
-        // User has not reviewed this media, add a new review
-        const reviewData = {
-          email: user.email,
-          mediaId,
-          mediaType,
-          title: mediaTitle,
-          posterPath,
-          rating,
-          reviewText,
-        };
-
-        try {
-          await serverAxios.post("/api/users/reviews/add", reviewData);
-          setReviewText("");
-          setRating(0);
-          fetchReviews(); // Re-fetch reviews to display the latest
-        } catch (error) {
-          console.error(
-            "Error posting review:",
-            error.response ? error.response.data : error
-          );
-        }
+        // Add new review
+        response = await serverAxios.post("/api/users/reviews/add", reviewData);
       }
+
+      if (response && response.status >= 200 && response.status < 300) {
+        fetchReviews(); // Refresh reviews
+        setReviewText("");
+        setRating(2); // Reset rating
+      } else {
+        throw new Error("Failed to submit review");
+      }
+    } catch (error) {
+      console.error("Error submitting review:", error);
     }
   };
 
@@ -103,9 +86,9 @@ function ReviewsComp({ mediaId, mediaType, mediaTitle, posterPath }) {
         <div key={index} className="review-entry">
           <AccountCircleIcon className="account-icon" />
           <div className="review-details">
-            <span className="review-email">{review.email || "Anonymous"}</span>
+            <span className="review-email">{review.email}</span>
             <span className="review-date">
-              {new Date(review.createdAt).toLocaleString()}
+              {new Date(review.createdAt).toLocaleDateString()}
             </span>
             <Rating name="read-only" value={review.rating} readOnly />
             <p>{review.reviewText}</p>
@@ -124,9 +107,7 @@ function ReviewsComp({ mediaId, mediaType, mediaTitle, posterPath }) {
             className="user-rating"
             name="user-rating"
             value={rating}
-            onChange={(event, newValue) => {
-              setRating(newValue);
-            }}
+            onChange={(e, newValue) => setRating(newValue)}
           />
           <Button
             className="submit-button"

@@ -202,7 +202,6 @@ const HeaderContainer = styled(Container)`
           text-decoration: none;
           border-bottom: 1px solid #f34242;
           font-weight: bold;
-          border-radius: 4px;
 
           &:hover {
             background-color: #ff000042;

@@ -6,13 +6,15 @@ import Button from "@mui/material/Button";
 import { firebaseAuth } from "../utils/firebase-config";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 // Images
-import OscarsTriviaBg from "../assets/oscars-trivia-bg.jpg";
+import OscarsTriviaBg from "../assets/oscar-trivia-bg.jpg";
 import MoviesTriviaBg from "../assets/movies-trivia-bg.jpg";
 import SeriesTriviaBg from "../assets/series-trivia-bg.jpg";
-import ActorsTriviaBg from "../assets/actors-trivia-bg.jpg";
+import ActorsTriviaBg from "../assets/actor-trivia-bg.jpg";
 import DirectorsTriviaBg from "../assets/directors-trivia-bg.jpg";
+import Footer from "../components/Footer";
 
 const backgrounds = {
   oscars: OscarsTriviaBg,
@@ -31,6 +33,19 @@ export default function Trivia() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -90,72 +105,78 @@ export default function Trivia() {
   if (error) return <div>{error}</div>;
 
   return (
-    <StyledTrivia $bgImage={bgImage}>
-      <div className="trivia-container">
-        {questions.map((question, index) => (
-          <div key={index} className="question">
-            <h3>
-              {index + 1}. {question.question}
-            </h3>
-            {question.options.map((option, idx) => (
-              <Button
-                key={idx}
-                variant="contained"
-                className={`option ${
-                  selectedOptions[index] === option ? "selected" : ""
-                }`}
-                onClick={() => handleOptionSelect(index, option)}
-                disabled={submitted}
-              >
-                {option}
-              </Button>
-            ))}
-          </div>
-        ))}
-        {!submitted && (
-          <Button
-            variant="contained"
-            color="success"
-            onClick={handleSubmit}
-            style={{
-              color: "#ffffff",
-              fontSize: "2.5rem",
-              padding: "10px",
-              width: "20rem",
-            }}
-          >
-            Submit
-          </Button>
+    <>
+      <Navbar isScrolled={isScrolled} />
+      <StyledTrivia $bgImage={bgImage}>
+        <div className="trivia-container">
+          {questions.map((question, index) => (
+            <div key={index} className="question">
+              <h3>
+                {index + 1}. {question.question}
+              </h3>
+              {question.options.map((option, idx) => (
+                <Button
+                  key={idx}
+                  variant="contained"
+                  className={`option ${
+                    selectedOptions[index] === option ? "selected" : ""
+                  }`}
+                  onClick={() => handleOptionSelect(index, option)}
+                  disabled={submitted}
+                >
+                  {option}
+                </Button>
+              ))}
+            </div>
+          ))}
+          {!submitted && (
+            <Button
+              variant="contained"
+              color="success"
+              onClick={handleSubmit}
+              style={{
+                color: "#ffffff",
+                fontSize: "2.3rem",
+                padding: "10px",
+                width: "47%",
+                marginBottom: "1rem",
+              }}
+            >
+              Submit
+            </Button>
+          )}
+        </div>
+        {submitted && (
+          <ResultsContainer>
+            <div className="results">
+              <h2>Results</h2>
+              <p>Correct Answers: {results.correct}</p>
+              <p>Incorrect Answers: {results.incorrect}</p>
+            </div>
+            <Button
+              startIcon={<ArrowBackIcon style={{ color: "#e82128" }} />}
+              onClick={() => navigate("/challenges")}
+              style={{
+                color: "#e82128",
+                marginBottom: "20px",
+                fontSize: "1.2rem",
+              }}
+            >
+              Back to Challenges
+            </Button>
+          </ResultsContainer>
         )}
-      </div>
-      {submitted && (
-        <ResultsContainer>
-          <div className="results">
-            <h2>Results</h2>
-            <p>Correct Answers: {results.correct}</p>
-            <p>Incorrect Answers: {results.incorrect}</p>
-          </div>
-          <Button
-            startIcon={<ArrowBackIcon style={{ color: "#e82128" }} />}
-            onClick={() => navigate("/challenges")}
-            style={{
-              color: "#e82128",
-              marginBottom: "20px",
-              fontSize: "1.2rem",
-            }}
-          >
-            Back to Challenges
-          </Button>
-        </ResultsContainer>
-      )}
-    </StyledTrivia>
+      </StyledTrivia>
+      <Footer className="footer" />
+    </>
   );
 }
 
 const StyledTrivia = styled.div`
-  height: 100vh;
+  height: auto;
   background-image: url(${(props) => props.$bgImage});
-  background-size: cover;
+  background-size: 100vw;
+  background-attachment: fixed;
   background-position: center;
   display: flex;
   align-items: center;
@@ -165,12 +186,10 @@ const StyledTrivia = styled.div`
 
   .trivia-container {
     width: 100%;
-    max-height: 100vh;
     background-color: rgba(0, 0, 0, 0.2);
-    padding: 4rem;
+    padding-top: 8rem;
     padding-left: 6rem;
     color: white;
-    overflow-y: auto;
 
     .question {
       margin-bottom: 30px;
@@ -191,7 +210,7 @@ const StyledTrivia = styled.div`
     }
 
     .option.selected {
-      background-color: #4caf50 !important;
+      background-color: #388f3c !important;
     }
 
     .results {

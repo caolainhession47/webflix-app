@@ -59,6 +59,24 @@ module.exports.getFavorites = async (req, res) => {
   }
 };
 
+// Fetch user's movies rated 5 stars
+module.exports.getHighlyRatedMovies = async (req, res) => {
+  const { email } = req.params;
+  try {
+    const user = await User.findOne({ email });
+    if (user) {
+      // Filter the reviews array for movies with a rating of 5
+      const highlyRatedMovies = user.reviews.filter(review => review.rating === 5);
+      res.json(highlyRatedMovies.map(review => review.mediaId)); // Send only the media IDs of highly rated movies
+    } else {
+      res.status(404).json({ msg: "User not found." });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: "Error fetching highly rated movies.", error });
+  }
+};
+
+
 // Remove a movie from favorites
 module.exports.removeFromFavorites = async (req, res) => {
   const { email, mediaId } = req.body;
