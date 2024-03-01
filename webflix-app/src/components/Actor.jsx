@@ -14,6 +14,7 @@ const Actor = ({ personId }) => {
   const [personDetails, setPersonDetails] = useState({});
   const [knownForMovies, setKnownForMovies] = useState([]);
   const [socials, setSocials] = useState({});
+  const [loadedImages, setLoadedImages] = useState([]);
   const navigate = useNavigate();
   const base_url = "https://image.tmdb.org/t/p/original/";
 
@@ -49,6 +50,10 @@ const Actor = ({ personId }) => {
 
   const handleSocialClick = (url) => {
     if (url) window.open(url, "_blank");
+  };
+
+  const handleImageLoad = (id) => {
+    setLoadedImages((prevLoadedImages) => [...prevLoadedImages, id]);
   };
 
   return (
@@ -117,14 +122,7 @@ const Actor = ({ personId }) => {
                 <OverlayTrigger
                   placement="bottom"
                   overlay={
-                    <Tooltip
-                      id={`tooltip-${item.id}`}
-                      style={{
-                        fontSize: "16px",
-                        padding: "12px",
-                        fontWeight: 500,
-                      }}
-                    >
+                    <Tooltip id={`tooltip-${item.id}`}>
                       {item.title || item.name}
                     </Tooltip>
                   }
@@ -133,11 +131,14 @@ const Actor = ({ personId }) => {
                     className="row_poster"
                     src={`${base_url}${item.poster_path}`}
                     alt={item.title || item.name}
+                    onLoad={() => handleImageLoad(item.id)}
                   />
                 </OverlayTrigger>
-                <div className="rating-container">
-                  <Rating value={item.vote_average} />
-                </div>
+                {loadedImages.includes(item.id) && (
+                  <div className="rating-container">
+                    <Rating value={item.vote_average} />
+                  </div>
+                )}
               </div>
             )
         )}
