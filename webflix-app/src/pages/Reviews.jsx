@@ -8,6 +8,7 @@ import { Container } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Rating from "@mui/material/Rating";
+import { toast } from "react-toastify";
 
 function UserReviews() {
   const [reviews, setReviews] = useState([]);
@@ -54,8 +55,10 @@ function UserReviews() {
         });
         // Filter out the deleted review
         setReviews(reviews.filter((review) => review.mediaId !== mediaId));
+        toast.success("Review removed successfully!");
       } catch (error) {
         console.error("Error deleting review:", error);
+        toast.error("Error deleting review:", error);
       }
     }
   };

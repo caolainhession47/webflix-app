@@ -6,6 +6,7 @@ import serverAxios from "../axios/serverAxios";
 import HighlightOffTwoToneIcon from "@mui/icons-material/HighlightOffTwoTone";
 import Rating from "./Rating";
 import { firebaseAuth } from "../utils/firebase-config";
+import { toast } from "react-toastify";
 
 const ListGrid = ({ mediaList, fetchList, removalEndpoint }) => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const ListGrid = ({ mediaList, fetchList, removalEndpoint }) => {
           mediaId: mediaId,
         });
         console.log("Media removed successfully");
+        toast.success("Media removed successfully");
         fetchList(); // Call fetchList to refresh the list
       } catch (error) {
         console.error("Error removing media:", error);

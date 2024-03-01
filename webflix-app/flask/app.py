@@ -4,9 +4,11 @@ import requests
 from content_based import get_content_based_recommendations
 from hybrid import hybrid_recommendations
 from collaborative import construct_interaction_matrix, item_based_recommendations
+from flask_cors import CORS
+
 
 app = Flask(__name__)
-
+CORS(app)
 # Load the movies dataset just once when the app starts
 movies_df = pd.read_csv('top10K.csv')
 movies_df.fillna('', inplace=True)
@@ -55,7 +57,7 @@ def recommend_hybrid():
     if not user_emails:
         return jsonify({"error": "No emails provided"}), 400
 
-    recommended_movies = hybrid_recommendations(user_emails, movies_df, top_n=10)
+    recommended_movies = hybrid_recommendations(user_emails, movies_df)
 
     if recommended_movies:
         return jsonify(recommended_movies)

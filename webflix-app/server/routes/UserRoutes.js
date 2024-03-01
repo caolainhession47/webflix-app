@@ -3,6 +3,7 @@ const UserController = require("../controllers/UserController");
 
 const router = express.Router();
 
+router.post('/createUserProfile', UserController.createUser);
 router.post('/favorites/add', UserController.addToFavorites);
 router.post('/watchlist/add', UserController.addToWatchlist);
 router.get('/favorites/:email', UserController.getFavorites);

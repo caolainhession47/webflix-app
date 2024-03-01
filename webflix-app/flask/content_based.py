@@ -4,7 +4,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 def fetch_user_movie_ids(email):
-    node_backend_url = 'http://localhost:5000'  # or the production URL
+    node_backend_url = 'http://localhost:5000'  
     favorites_url = f'{node_backend_url}/api/users/favorites/{email}'
     highly_rated_url = f'{node_backend_url}/api/users/reviews/highly-rated/{email}'
 
@@ -19,11 +19,6 @@ def fetch_user_movie_ids(email):
         return []
     
 def get_content_based_recommendations(movie_ids, movies_df):
-    # Ensure combined features column exists
-    if 'combined_features' not in movies_df.columns:
-        movies_df['director'] = movies_df['director'].str.replace(' ', '_')
-        movies_df['cast'] = movies_df['cast'].str.replace(' ', '_')
-        movies_df['combined_features'] = 2 * (movies_df['director'] + ' ') + movies_df['genres'].str.replace('|', ' ') + ' ' + movies_df['overview'] + ' ' + movies_df['cast'].str.replace('|', ' ')
     
     # Generate TF-IDF matrix for combined features
     tfidf_vectorizer = TfidfVectorizer(stop_words='english')

@@ -12,7 +12,7 @@ def hybrid_item_similarity(movies_df):
 
     return cosine_sim_content
 
-def hybrid_recommendations(emails, movies_df, top_n=10):
+def hybrid_recommendations(emails, movies_df):
     movie_ids = fetch_user_movie_ids(emails) 
 
     # Compute enhanced item-item similarity using both interactions and content features
@@ -37,6 +37,5 @@ def hybrid_recommendations(emails, movies_df, top_n=10):
     recommended_movies_details = movies_df[movies_df['id'].isin(all_recommendations)]
 
     # Sort by rating in descending order and select top N
-    recommended_movies_sorted = recommended_movies_details.sort_values(by='vote_average', ascending=False).head(top_n)
-
+    recommended_movies_sorted = recommended_movies_details.sort_values(by='vote_average', ascending=False)
     return recommended_movies_sorted.to_dict('records')

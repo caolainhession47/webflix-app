@@ -1,5 +1,31 @@
 const User = require('../models/UserModel');
 
+module.exports.createUser = async (req, res) => {
+  const { email, username } = req.body;
+
+  try {
+    // Check if a user with the given email or username already exists
+    const existingUser = await User.findOne({ 
+      $or: [{ email }, { username }]
+    });
+
+    if (existingUser) {
+      return res.status(400).json({ msg: "Email or username already exists." });
+    }
+
+    // Create a new user with the email and username provided
+    const newUser = new User({ email: email.toLowerCase(), username });
+
+    // Save the new user to the database
+    await newUser.save();
+
+    res.status(201).json({ msg: "New user created successfully.", user: newUser });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error creating new user.", error: error.message });
+  }
+};
+
 module.exports.addToFavorites = async (req, res) => {
   const { email, movie } = req.body;
 
@@ -172,7 +198,7 @@ module.exports.getTriviaResults = async (req, res) => {
 module.exports.getLeaderboard = async (req, res) => {
   try {
     // Fetch all users' trivia results, sort them by correct answers in descending order
-    const leaderboard = await User.find({}, "triviaResults email").sort({"triviaResults.correct": -1});
+    const leaderboard = await User.find({}, "triviaResults username").sort({"triviaResults.correct": -1});
     if (leaderboard.length > 0) {
       res.json(leaderboard);
     } else {
@@ -213,7 +239,7 @@ module.exports.addReview = async (req, res) => {
 };
 
 
-// Fetch all reviews for a specific media along with user's email
+// Fetch all reviews for a specific media along with user's email and username
 module.exports.getReviewsByMediaId = async (req, res) => {
   const { mediaId } = req.params;
 
@@ -222,17 +248,19 @@ module.exports.getReviewsByMediaId = async (req, res) => {
       { $unwind: "$reviews" },
       { $match: { "reviews.mediaId": mediaId } },
       { $project: {
-          "email": 1, 
-          "review": "$reviews", 
+          "email": 1,
+          "username": 1,  // Include the username in the projection
+          "review": "$reviews",
           "_id": 0
         }
       }
     ]);
 
     if (reviews.length > 0) {
-      const formattedReviews = reviews.map(({ email, review }) => ({
-        email, 
-        ...review // Spread the review document fields
+      const formattedReviews = reviews.map(({ email, username, review }) => ({
+        email,
+        username,  // Include the username in each review object
+        ...review  // Spread the review document fields
       }));
       res.json(formattedReviews);
     } else {

@@ -28,6 +28,8 @@ const requests = {
   fetchPersonSocials: (personId) => `/person/${personId}/external_ids?api_key=${API_KEY}`,
   fetchSearch: (mediaType, query) => `/search/${mediaType}?query=${encodeURIComponent(query)}&api_key=${API_KEY}`,
   fetchSearchPeople: (query) => `/search/person?query=${encodeURIComponent(query)}&api_key=${API_KEY}`,
+  fetchMediaDetails: (mediaType, id) => `/${mediaType}/${id}?api_key=${API_KEY}`,
+
 
 };
 

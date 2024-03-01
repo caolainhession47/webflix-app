@@ -6,11 +6,44 @@ import { useNavigate } from "react-router-dom";
 import requests from "../axios/requests";
 import axios from "../axios/axios";
 
-const MediaGrid = ({ selectedOption, mediaType }) => {
+const MediaGrid = ({ selectedOption, mediaType, recommendationIDs }) => {
   const [mediaList, setMediaList] = useState([]);
   const [page, setPage] = useState(1);
   const base_url = "https://image.tmdb.org/t/p/original/";
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (recommendationIDs && recommendationIDs.length > 0) {
+      const fetchRecommendedMedia = async () => {
+        console.log("Fetching recommended media..."); // Debug: Check if this function runs
+        const mediaDetailsPromises = recommendationIDs.map(async (id) => {
+          const url = requests.fetchMediaDetails(mediaType, id);
+          console.log(`Fetching details for ${mediaType} with ID: ${id}`); // Debug: Check the URL being called
+          try {
+            const response = await axios.get(url);
+            console.log("Data for ID:", id, response.data); // Debug: Inspect the data for each ID
+            return response.data;
+          } catch (error) {
+            console.error(
+              `Error fetching details for ${mediaType} with ID: ${id}:`,
+              error
+            ); // Debug: Check for errors in each call
+            return null; // Return null or some error indicator for this specific call
+          }
+        });
+
+        try {
+          const mediaDetails = await Promise.all(mediaDetailsPromises);
+          console.log("All media details fetched:", mediaDetails); // Debug: Check the array of all fetched media details
+          setMediaList(mediaDetails.filter((detail) => detail !== null)); // Filter out any nulls from failed requests
+        } catch (error) {
+          console.error("Error fetching recommended media:", error); // Debug: Check for errors in Promise.all
+        }
+      };
+
+      fetchRecommendedMedia();
+    }
+  }, [recommendationIDs, mediaType]);
 
   useEffect(() => {
     setMediaList([]);
@@ -111,18 +144,20 @@ const MediaGrid = ({ selectedOption, mediaType }) => {
           </div>
         ))}
       </div>
-      <Button
-        variant="danger"
-        onClick={loadMoreItems}
-        style={{
-          marginTop: "20px",
-          display: "block",
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}
-      >
-        Load More
-      </Button>
+      {!recommendationIDs && (
+        <Button
+          variant="danger"
+          onClick={loadMoreItems}
+          style={{
+            marginTop: "20px",
+            display: "block",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
+          Load More
+        </Button>
+      )}
     </StyledContainer>
   );
 };

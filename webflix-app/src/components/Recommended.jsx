@@ -11,6 +11,7 @@ import { Container } from "react-bootstrap";
 
 const Recommended = ({ mediaType, mediaId }) => {
   const [recommendations, setRecommendations] = useState([]);
+  const [loadedImages, setLoadedImages] = useState([]);
   const navigate = useNavigate();
   const base_url = "https://image.tmdb.org/t/p/original/";
 
@@ -32,6 +33,10 @@ const Recommended = ({ mediaType, mediaId }) => {
     const mediaTypeItem = item.first_air_date ? "tv" : "movie";
     navigate(`/media/${mediaTypeItem}/${item.id}`);
     window.location.reload();
+  };
+
+  const handleImageLoad = (id) => {
+    setLoadedImages((prev) => [...prev, id]);
   };
 
   return (
@@ -64,11 +69,14 @@ const Recommended = ({ mediaType, mediaId }) => {
                   className="row_poster row_posterLarge"
                   src={`${base_url}${item.poster_path}`}
                   alt={item.title || item.name}
+                  onLoad={() => handleImageLoad(item.id)}
                 />
               </OverlayTrigger>
-              <div className="rating-container">
-                <Rating value={item.vote_average} />
-              </div>
+              {loadedImages.includes(item.id) && ( // Display the rating only if the image is fully loaded
+                <div className="rating-container">
+                  <Rating value={item.vote_average} />
+                </div>
+              )}
             </div>
           </div>
         ))}

@@ -11,6 +11,7 @@ import RateReviewIcon from "@mui/icons-material/RateReview";
 import ExtensionIcon from "@mui/icons-material/Extension";
 import MovieIcon from "@mui/icons-material/Movie";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { toast } from "react-toastify";
 
 export default function Navbar({ isScrolled }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -30,21 +31,22 @@ export default function Navbar({ isScrolled }) {
     if (isUserLoggedIn) {
       signOut(firebaseAuth)
         .then(() => {
-          alert("User is logged out!");
-          navigate("/"); // Navigate to the home screen after successful sign out
+          toast.success("User is logged out!");
+          navigate("/");
         })
         .catch((error) => {
           console.error("Error signing out:", error);
+          toast.error("Error signing out.");
         });
     } else {
-      alert("No user is currently logged in.");
+      toast.info("No user is currently logged in.");
     }
   };
 
   const handleLoginClick = (e) => {
     e.preventDefault();
     if (isUserLoggedIn) {
-      alert("You are already logged in!");
+      toast.info("You are already logged in!");
     } else {
       navigate("/login");
     }

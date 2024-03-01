@@ -20,7 +20,7 @@ export default function Challenges() {
   const LeaderboardEntry = ({ user, maxPoints }) => {
     // Bar chart data for this user
     const barData = {
-      labels: [user.email],
+      labels: [user.username],
       datasets: [
         {
           label: "Points",
@@ -62,8 +62,12 @@ export default function Challenges() {
           },
           ticks: {
             display: true,
+            font: {
+              size: 12,
+              weight: "bold",
+            },
           },
-          max: maxPoints, // Set max value to the max points
+          max: maxPoints,
         },
         y: {
           afterFit: function (scale) {
@@ -74,6 +78,10 @@ export default function Challenges() {
           },
           ticks: {
             display: true,
+            font: {
+              size: 14,
+              weight: "bold",
+            },
           },
         },
       },
@@ -90,13 +98,13 @@ export default function Challenges() {
     const ratio =
       totalAnswers > 0
         ? (user.triviaResults.correct / totalAnswers).toFixed(2)
-        : "Perfect";
+        : "N/A";
 
     const pieOptions = {
       layout: {
         padding: {
           left: 0,
-          right: 210,
+          right: 240,
           top: 0,
           bottom: 0,
         },
@@ -129,7 +137,7 @@ export default function Challenges() {
         <div
           style={{
             position: "absolute",
-            right: "9.7rem",
+            right: "10rem",
           }}
         >
           <h6>{`Ratio: ${ratio}`}</h6>
@@ -153,7 +161,8 @@ export default function Challenges() {
         const response = await serverAxios.get("/api/users/trivia/leaderboard");
         const formattedData = response.data.map((user) => ({
           ...user,
-          points: user.triviaResults.correct,
+          points: user.triviaResults ? user.triviaResults.correct : 0,
+          triviaResults: user.triviaResults || { correct: 0, incorrect: 0 }, // Provide default values
         }));
         setLeaderboardData(formattedData);
       } catch (err) {

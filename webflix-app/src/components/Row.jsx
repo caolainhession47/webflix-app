@@ -9,6 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 function Row({ title, fetchUrl, isLargeRow }) {
   const [items, setItems] = useState([]);
+  const [loadedImages, setLoadedImages] = useState([]);
   const navigate = useNavigate();
   const base_url = "https://image.tmdb.org/t/p/original/";
 
@@ -26,12 +27,17 @@ function Row({ title, fetchUrl, isLargeRow }) {
     navigate(`/media/${mediaType}/${item.id}`);
   };
 
+  const handleImageLoad = (id) => {
+    setLoadedImages((prevLoadedImages) => [...prevLoadedImages, id]);
+  };
+
   return (
     <StyledContainer>
       <h2>{title}</h2>
       <div className="row_posters">
-        {items.map(
-          (item) =>
+        {items.map((item) => {
+          const hasImageLoaded = loadedImages.includes(item.id);
+          return (
             ((isLargeRow && item.poster_path) ||
               (!isLargeRow && item.backdrop_path)) && (
               <div
@@ -43,16 +49,9 @@ function Row({ title, fetchUrl, isLargeRow }) {
                   <OverlayTrigger
                     placement="bottom"
                     overlay={
-                      <Tooltip
-                        id={`tooltip-${item.id}`}
-                        style={{
-                          fontSize: "16px",
-                          padding: "12px",
-                          fontWeight: 500,
-                        }}
-                      >
+                      <StyledTooltip id={`tooltip-${item.id}`}>
                         {item.title || item.name}
-                      </Tooltip>
+                      </StyledTooltip>
                     }
                   >
                     <img
@@ -63,19 +62,29 @@ function Row({ title, fetchUrl, isLargeRow }) {
                         isLargeRow ? item.poster_path : item.backdrop_path
                       }`}
                       alt={item.title || item.name}
+                      onLoad={() => handleImageLoad(item.id)}
                     />
                   </OverlayTrigger>
-                  <div className="rating-container">
-                    <Rating value={item.vote_average} />
-                  </div>
+                  {hasImageLoaded && (
+                    <div className="rating-container">
+                      <Rating value={item.vote_average} />
+                    </div>
+                  )}
                 </div>
               </div>
             )
-        )}
+          );
+        })}
       </div>
     </StyledContainer>
   );
 }
+
+const StyledTooltip = styled(Tooltip)`
+  font-size: 16px;
+  padding: 12px;
+  font-weight: 500;
+`;
 
 const StyledContainer = styled.div`
   color: white;
@@ -84,7 +93,7 @@ const StyledContainer = styled.div`
     display: flex;
     overflow-y: hidden;
     overflow-x: scroll;
-    padding: 10px 20px;
+    padding: 5px 20px 25px 20px;
     &::-webkit-scrollbar {
       display: none;
     }

@@ -14,6 +14,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import Cast from "./Cast";
 import { firebaseAuth } from "../utils/firebase-config";
 import serverAxios from "../axios/serverAxios";
+import { toast } from "react-toastify";
 
 function MediaBanner() {
   const { mediaType, mediaId } = useParams();
@@ -79,7 +80,7 @@ function MediaBanner() {
 
   const handleAddToWatchlist = async () => {
     if (!currentUser || !currentUser.email) {
-      alert("Please log in to add to your watchlist");
+      toast.warning("Please log in to add to your watchlist");
       return;
     }
 
@@ -99,24 +100,24 @@ function MediaBanner() {
       });
 
       if (response.data.msg === "Movie already in watchlist.") {
-        alert("Movie already in watchlist!");
+        toast.info("Movie already in watchlist!");
       } else {
         console.log(response.data);
-        alert("Added to watchlist successfully!");
+        toast.success("Added to watchlist successfully!");
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        alert(error.response.data.msg);
+        toast.error(error.response.data.msg);
       } else {
         console.error("Error adding to watchlist:", error);
-        alert("Failed to add to watchlist.");
+        toast.error("Failed to add to watchlist.");
       }
     }
   };
 
   const handleAddToFavorites = async () => {
     if (!currentUser || !currentUser.email) {
-      alert("Please log in to add to your favorites");
+      toast.warning("Please log in to add to your favorites");
       return;
     }
 
@@ -136,17 +137,17 @@ function MediaBanner() {
       });
 
       if (response.data.msg === "Movie already in favorites.") {
-        alert("Movie already in favorites!");
+        toast.info("Movie already in favorites!");
       } else {
         console.log(response.data);
-        alert("Added to favorites successfully!");
+        toast.success("Added to favorites successfully!");
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        alert(error.response.data.msg);
+        toast.error(error.response.data.msg);
       } else {
         console.error("Error adding to favorites:", error);
-        alert("Failed to add to favorites.");
+        toast.error("Failed to add to favorites.");
       }
     }
   };

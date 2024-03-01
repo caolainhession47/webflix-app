@@ -7,6 +7,7 @@ import { firebaseAuth } from "../utils/firebase-config";
 import serverAxios from "../axios/serverAxios";
 import Rating from "@mui/material/Rating";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { toast } from "react-toastify";
 
 function ReviewsComp({ mediaId, mediaType, mediaTitle, posterPath }) {
   const [reviews, setReviews] = useState([]);
@@ -69,6 +70,7 @@ function ReviewsComp({ mediaId, mediaType, mediaTitle, posterPath }) {
 
       if (response && response.status >= 200 && response.status < 300) {
         fetchReviews(); // Refresh reviews
+        toast.success("Review submitted successfully");
         setReviewText("");
         setRating(2); // Reset rating
       } else {
@@ -86,7 +88,7 @@ function ReviewsComp({ mediaId, mediaType, mediaTitle, posterPath }) {
         <div key={index} className="review-entry">
           <AccountCircleIcon className="account-icon" />
           <div className="review-details">
-            <span className="review-email">{review.email}</span>
+            <span className="review-username">{review.username}</span>
             <span className="review-date">
               {new Date(review.createdAt).toLocaleDateString()}
             </span>
@@ -166,7 +168,7 @@ const StyledContainer = styled(Container)`
     flex-direction: column;
   }
 
-  .review-email {
+  .review-username {
     font-weight: bold;
   }
 

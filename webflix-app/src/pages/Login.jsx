@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth } from "../utils/firebase-config";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
@@ -31,8 +32,11 @@ export default function Login() {
     const { email, password } = credentials;
     try {
       await signInWithEmailAndPassword(firebaseAuth, email, password);
+      toast.success("User logged in successfully!");
+      navigate("/");
     } catch (error) {
       setError(error.message);
+      toast.error(error.message);
     }
   };
 

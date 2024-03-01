@@ -9,6 +9,7 @@ import Recommended from "../components/Recommended";
 import Footer from "../components/Footer";
 import axios from "../axios/axios";
 import requests from "../axios/requests";
+import { toast } from "react-toastify";
 
 export default function Media() {
   const { mediaType, mediaId } = useParams();
@@ -44,6 +45,7 @@ export default function Media() {
         });
       } catch (error) {
         console.error("Error fetching media details:", error);
+        toast.error(error.message);
       }
     };
 

@@ -8,12 +8,16 @@ import {
 import BackgroundImage from "../components/BackgroundImage";
 import Header from "../components/Header";
 import { firebaseAuth } from "../utils/firebase-config";
+import { toast } from "react-toastify";
+import serverAxios from "../axios/serverAxios";
 
 function Signup() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showUsername, setShowUsername] = useState(false);
   const [formValues, setFormValues] = useState({
     email: "",
     password: "",
+    username: "",
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -21,11 +25,25 @@ function Signup() {
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
-      const { email, password } = formValues;
-      await createUserWithEmailAndPassword(firebaseAuth, email, password);
+      const { email, password, username } = formValues;
+      const userCredential = await createUserWithEmailAndPassword(
+        firebaseAuth,
+        email,
+        password
+      );
+
+      const uid = userCredential.user.uid;
+      await serverAxios.post("/api/users/createUserProfile", {
+        uid,
+        email,
+        username,
+      });
+
+      toast.success("User signed up successfully!");
       navigate("/"); // Navigate to home on successful signup
     } catch (error) {
       setError(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -63,33 +81,46 @@ function Signup() {
               value={formValues.email}
               required
             />
-            {showPassword && (
-              <input
-                type="password"
-                placeholder="Password"
-                onChange={handleChange}
-                name="password"
-                value={formValues.password}
-                required
-              />
-            )}
-            {!showPassword && (
-              <button type="button" onClick={() => setShowPassword(true)}>
+            {!showUsername ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setShowUsername(true);
+                  setShowPassword(true);
+                }}
+              >
                 Get Started
               </button>
+            ) : (
+              <>
+                <input
+                  type="text"
+                  placeholder="Username"
+                  onChange={handleChange}
+                  name="username"
+                  value={formValues.username}
+                  required
+                />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  onChange={handleChange}
+                  name="password"
+                  value={formValues.password}
+                  required
+                />
+                <button
+                  type="submit"
+                  id="SignUp"
+                  className="hover-effect"
+                  onClick={handleSignIn}
+                >
+                  Sign Up
+                </button>
+              </>
             )}
-            {showPassword && (
-              <button
-                type="submit"
-                id="SignUp"
-                className="hover-effect"
-                onClick={handleSignIn}
-              >
-                Sign Up
-              </button>
-            )}
+            {error && <p style={{ color: "yellow" }}>{error}</p>}
           </div>
-          {error && <p style={{ color: "yellow" }}>{error}</p>}
         </div>
       </div>
     </Container>
@@ -152,7 +183,7 @@ const Container = styled.div`
 
         button {
           padding: 0.5rem 1rem;
-          background-color: #e50914;
+          background-color: #e82128;
           border: none;
           cursor: pointer;
           color: white;
@@ -163,22 +194,18 @@ const Container = styled.div`
 
       button {
         padding: 0.5rem 1rem;
-        background-color: #e50914;
+        background-color: #e82128;
         border: none;
         cursor: pointer;
         color: white;
-        border-radius: 0.2rem;
         font-weight: bolder;
-        font-size: 1.05rem;
+        font-size: 1.2rem;
       }
 
       #SignUp {
-        position: relative;
-        left: 23rem;
-        width: 11rem;
-        height: 3rem;
-        background-color: #e50914;
-        margin: 0.5rem;
+        height: 5rem;
+        border: 1px solid black;
+        background-color: #e82128;
         transition: background-color 0.3s;
       }
 
