@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -22,6 +22,16 @@ function Signup() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // Use useEffect to navigate when currentUser changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
+      if (currentUser) {
+        navigate("/");
+      }
+    });
+    return unsubscribe; // This function is called when the component unmounts
+  }, [navigate]);
+
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
@@ -40,16 +50,11 @@ function Signup() {
       });
 
       toast.success("User signed up successfully!");
-      navigate("/"); // Navigate to home on successful signup
     } catch (error) {
       setError(error.message);
       toast.error(error.message);
     }
   };
-
-  onAuthStateChanged(firebaseAuth, (currentUser) => {
-    if (currentUser) navigate("/");
-  });
 
   const handleChange = (e) => {
     setFormValues({

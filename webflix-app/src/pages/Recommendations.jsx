@@ -14,6 +14,7 @@ import { firebaseAuth } from "../utils/firebase-config";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import FullPageLoader from "../components/FullPageLoader";
+import { toast } from "react-toastify";
 
 const theme = createTheme({
   palette: {
@@ -102,10 +103,21 @@ const Recommendations = () => {
         "http://127.0.0.1:5000/recommend/content-based",
         { email }
       );
-      const fetchedIDs = response.data.map((item) => item.id);
-      setRecommendationIDs(fetchedIDs);
+
+      // Check if the response contains recommendations
+      if (response.data.message) {
+        // Handle the case where no recommendations are found
+        toast.warn(response.data.message);
+        setRecommendationIDs([]);
+      } else {
+        // Otherwise, process the recommendations as usual
+        const fetchedIDs = response.data.map((item) => item.id);
+        setRecommendationIDs(fetchedIDs);
+      }
     } catch (error) {
+      // Handle errors that aren't related to the absence of recommendations
       console.error("Error fetching for you recommendations:", error);
+      toast.error("An error occurred while fetching recommendations.");
     } finally {
       setLoadingForYou(false); // End loading
     }
@@ -125,7 +137,13 @@ const Recommendations = () => {
       const fetchedIDs = response.data.map((item) => item.id);
       setRecommendationIDs(fetchedIDs);
     } catch (error) {
-      console.error("Error fetching watch party recommendations:", error);
+      if (error.response && error.response.status === 404) {
+        toast.warn(
+          "Recommendations are generated based on users favourites and movies they rate highly, please interact with movies to get tailored recommendations"
+        );
+      } else {
+        console.error("Error fetching watch party recommendations:", error);
+      }
     } finally {
       setLoadingRecommendations(false);
     }

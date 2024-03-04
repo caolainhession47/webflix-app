@@ -45,7 +45,7 @@ def recommend_content_based():
         recommendations = get_content_based_recommendations(movie_ids, movies_df)
         return jsonify(recommendations)
     else:
-        return jsonify({"error": "No movie IDs found for user"}), 404
+        return jsonify({"message": "No movie IDs found for user, please add movies to favorites or rate movies to get recommendations!"}), 200
     
     
 # Endpoint for hybrid recommendations
@@ -62,7 +62,7 @@ def recommend_hybrid():
     if recommended_movies:
         return jsonify(recommended_movies)
     else:
-        return jsonify({"error": "No recommendations found"}), 404
+        return jsonify({"message": "No movie IDs found for the users, please add movies to favorites or rate movies to get recommendations!"}), 200
 
 # Endpoint for collaborative recommendations
 @app.route('/recommend/collaborative', methods=['POST'])

@@ -264,7 +264,7 @@ module.exports.getReviewsByMediaId = async (req, res) => {
       }));
       res.json(formattedReviews);
     } else {
-      res.status(404).json({ msg: "No reviews found for this media." });
+      res.json([]);  // Return an empty array with a 200 status
     }
   } catch (error) {
     res.status(500).json({ msg: "Error fetching reviews.", error });
@@ -303,7 +303,7 @@ module.exports.getUserReviews = async (req, res) => {
     if (user && user.reviews.length > 0) {
       res.json(user.reviews);
     } else {
-      res.status(404).json({ msg: "No reviews found for this user." });
+      res.json([]);  // Return an empty array with a 200 status
     }
   } catch (error) {
     res.status(500).json({ msg: "Error fetching user reviews.", error });
