@@ -138,11 +138,12 @@ export default function Trivia() {
                 color: "#ffffff",
                 fontSize: "2.3rem",
                 padding: "10px",
-                width: "47%",
+                width: "94%",
+                // left: "100px",
                 marginBottom: "1rem",
               }}
             >
-              Submit
+              Submit answers
             </Button>
           )}
         </div>
