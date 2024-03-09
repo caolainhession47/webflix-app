@@ -25,8 +25,8 @@ mongoose.connect(mongoDbUri, {
   app.use('/api/challenges', challengeRoutes);
 
 
-  app.listen(5000, () => {
-    console.log("server started on port 5000");
-  });
+  // app.listen(5000, () => {
+  //   console.log("server started on port 5000");
+  // });
 
-  // module.exports = app;
+  module.exports = app;
