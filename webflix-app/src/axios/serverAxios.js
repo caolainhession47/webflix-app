@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const serverAxios = axios.create({
-    baseURL: 'webflix-app.vercel.app' 
+    baseURL: 'http://localhost:5000' 
   });
 
   export default serverAxios;
