@@ -1,4 +1,4 @@
-require('dotenv').config();
+//require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -10,7 +10,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const mongoDbUri = process.env.MONGODB_URI;
+//const mongoDbUri = process.env.MONGODB_URI;
+const mongoDbUri = "mongodb+srv://caolainhession:Padraig1@webflix.ymlg9zp.mongodb.net/";
 
 mongoose.connect(mongoDbUri, {
   useNewUrlParser: true,
