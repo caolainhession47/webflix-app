@@ -64,7 +64,7 @@ function Signup() {
   };
 
   return (
-    <Container>
+    <Container showPassword={showPassword}>
       <BackgroundImage />
       <div className="content">
         <Header login />

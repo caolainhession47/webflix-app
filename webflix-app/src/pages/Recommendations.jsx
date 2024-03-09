@@ -123,6 +123,8 @@ const Recommendations = () => {
     }
   };
 
+  const hasRecommendations = recommendationIDs.length > 0;
+
   const handleGenerateWatchPartyRecommendations = async () => {
     const emails = emailInputs.filter((email) => email.trim() !== "");
     if (emails.length === 0) return;
@@ -208,6 +210,15 @@ const Recommendations = () => {
             </Button>
           </ButtonGroup>
         </div>
+        {activeButton === "forYou" && !loadingForYou && !hasRecommendations && (
+          <MessageContainer>
+            <h1>
+              Recommendations are generated from movies that are in a users
+              favourites list or movies that a user has rated highly, please
+              interact with movies in order to get recommendations.
+            </h1>
+          </MessageContainer>
+        )}
         {activeButton === "watchParty" && showEmailFields && (
           <WatchPartyContainer>
             {emailInputs.map((email, index) => (
@@ -268,6 +279,21 @@ const WatchPartyContainer = styled.div`
     width: fit-content;
     margin-top: 1.5rem;
   }
+`;
+
+const MessageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 54vh;
+  text-align: center;
+  background-color: #333;
+  color: white;
+  margin: 2rem;
+  padding: 2rem;
+  border-radius: 10px;
+  bottom: 1rem;
+  position: relative;
 `;
 
 export default Recommendations;
