@@ -1,4 +1,4 @@
-//require('dotenv').config();
+require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -10,8 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-//const mongoDbUri = process.env.MONGODB_URI;
-const mongoDbUri = "mongodb+srv://caolainhession:Padraig1@webflix.ymlg9zp.mongodb.net/";
+const mongoDbUri = process.env.MONGODB_URI;
 
 mongoose.connect(mongoDbUri, {
   useNewUrlParser: true,
@@ -26,8 +25,8 @@ mongoose.connect(mongoDbUri, {
   app.use('/api/challenges', challengeRoutes);
 
 
-  // app.listen(5000, () => {
-  //   console.log("server started on port 5000");
-  // });
+  app.listen(5000, () => {
+    console.log("server started on port 5000");
+  });
 
-  module.exports = app;
+   module.exports = app;
