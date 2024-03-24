@@ -21,14 +21,14 @@ const MediaGrid = ({ selectedOption, mediaType, recommendationIDs }) => {
           console.log(`Fetching details for ${mediaType} with ID: ${id}`); // Debug: Check the URL being called
           try {
             const response = await axios.get(url);
-            console.log("Data for ID:", id, response.data); // Debug: Inspect the data for each ID
+            console.log("Data for ID:", id, response.data); // Debug: check data for each ID
             return response.data;
           } catch (error) {
             console.error(
               `Error fetching details for ${mediaType} with ID: ${id}:`,
               error
             ); // Debug: Check for errors in each call
-            return null; // Return null or some error indicator for this specific call
+            return null;
           }
         });
 

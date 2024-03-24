@@ -17,7 +17,7 @@ function Banner({ mediaType = "movie" }) {
   const [content, setContent] = useState(null);
   const [genres, setGenres] = useState([]);
 
-  // Define the truncate function
+  // truncate function
   function truncate(string, n) {
     return string?.length > n ? string.substr(0, n) + "..." : string;
   }

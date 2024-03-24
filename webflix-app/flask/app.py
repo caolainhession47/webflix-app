@@ -25,7 +25,8 @@ def fetch_user_movie_ids(email):
 
     movie_ids = []
     if favorites_response.ok:
-        favorites = [str(movie['mediaId']) for movie in favorites_response.json()]  
+        favorites = [str(movie['mediaId']) for movie
+in favorites_response.json()]  
         movie_ids.extend(favorites)
 
     if highly_rated_response.ok:
