@@ -6,12 +6,14 @@ import { useNavigate } from "react-router-dom";
 import requests from "../axios/requests";
 import axios from "../axios/axios";
 
+// MediaGrid component displays a grid of media items (movies or TV shows)
 const MediaGrid = ({ selectedOption, mediaType, recommendationIDs }) => {
-  const [mediaList, setMediaList] = useState([]);
-  const [page, setPage] = useState(1);
+  const [mediaList, setMediaList] = useState([]); // State to hold the list of media items
+  const [page, setPage] = useState(1); // State for pagination, starting from page 1
   const base_url = "https://image.tmdb.org/t/p/original/";
   const navigate = useNavigate();
 
+  // useEffect to fetch recommended media based on provided IDs
   useEffect(() => {
     if (recommendationIDs && recommendationIDs.length > 0) {
       const fetchRecommendedMedia = async () => {
@@ -22,13 +24,13 @@ const MediaGrid = ({ selectedOption, mediaType, recommendationIDs }) => {
           try {
             const response = await axios.get(url);
             console.log("Data for ID:", id, response.data); // Debug: check data for each ID
-            return response.data;
+            return response.data; // Returns media details for each ID
           } catch (error) {
             console.error(
               `Error fetching details for ${mediaType} with ID: ${id}:`,
               error
             ); // Debug: Check for errors in each call
-            return null;
+            return null; // Returns null in case of an error
           }
         });
 
@@ -45,14 +47,16 @@ const MediaGrid = ({ selectedOption, mediaType, recommendationIDs }) => {
     }
   }, [recommendationIDs, mediaType]);
 
+  // useEffect to reset the media list and page number when selectedOption or mediaType changes
   useEffect(() => {
     setMediaList([]);
     setPage(1);
   }, [selectedOption, mediaType]);
 
+  // useEffect to fetch media items based on the selected option and pagination
   useEffect(() => {
     const fetchMedia = async () => {
-      let endpoint = "";
+      let endpoint = ""; // Endpoint to be constructed based on the selected option and media type
 
       if (mediaType === "movie") {
         switch (selectedOption) {
@@ -96,8 +100,10 @@ const MediaGrid = ({ selectedOption, mediaType, recommendationIDs }) => {
       );
       const newMedia = response.data.results;
 
+      // Appending new media items to the existing list, ensuring no duplicates
       setMediaList((prevMediaList) => {
         const updatedMediaList = [...prevMediaList, ...newMedia];
+        // Removing duplicates based on media ID
         const uniqueMediaList = Array.from(
           new Set(updatedMediaList.map((item) => item.id))
         ).map((id) => updatedMediaList.find((item) => item.id === id));
@@ -108,12 +114,13 @@ const MediaGrid = ({ selectedOption, mediaType, recommendationIDs }) => {
     fetchMedia();
   }, [selectedOption, mediaType, page]);
 
+  // Function to load more media items by incrementing the page state
   const loadMoreItems = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
   const handleItemClick = (media) => {
-    const mediaDetailType = media.first_air_date ? "tv" : "movie";
+    const mediaDetailType = media.first_air_date ? "tv" : "movie"; // Determining the detail type based on the presence of 'first_air_date'
     navigate(`/media/${mediaDetailType}/${media.id}`);
   };
 

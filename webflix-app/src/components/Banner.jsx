@@ -12,6 +12,7 @@ import FullPageLoader from "./FullPageLoader";
 import { useNavigate } from "react-router-dom";
 import Tooltip from "@mui/material/Tooltip";
 
+// Banner component accepts mediaType prop with default value "movie"
 function Banner({ mediaType = "movie" }) {
   const navigate = useNavigate();
   const [content, setContent] = useState(null);
@@ -22,6 +23,7 @@ function Banner({ mediaType = "movie" }) {
     return string?.length > n ? string.substr(0, n) + "..." : string;
   }
 
+  // Effect hook to fetch media content and genres on component mount or when mediaType changes
   useEffect(() => {
     async function fetchData() {
       try {
@@ -57,14 +59,17 @@ function Banner({ mediaType = "movie" }) {
     fetchData();
   }, [mediaType]);
 
+  // If content has not been fetched, display a loader
   if (!content) {
     return <FullPageLoader />;
   }
 
+  // Handles navigation to media details page
   const handleInfoClick = () => {
     navigate(`/media/${mediaType}/${content.id}`);
   };
 
+  // Handles navigation to the trailer player page
   const handlePlayTrailer = () => {
     navigate(`/player/${mediaType}/${content.id}`);
   };

@@ -10,11 +10,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Container } from "react-bootstrap";
 
 const Recommended = ({ mediaType, mediaId }) => {
-  const [recommendations, setRecommendations] = useState([]);
-  const [loadedImages, setLoadedImages] = useState([]);
+  const [recommendations, setRecommendations] = useState([]); // State for storing fetched recommendations
+  const [loadedImages, setLoadedImages] = useState([]); // State for tracking loaded images
   const navigate = useNavigate();
-  const base_url = "https://image.tmdb.org/t/p/original/";
+  const base_url = "https://image.tmdb.org/t/p/original/"; // Base URL for media images
 
+  // Fetches recommendations from the API when the component mounts or when mediaType or mediaId changes
   useEffect(() => {
     async function fetchRecommendations() {
       const fetchUrl = requests.fetchRecommendations(mediaType, mediaId);
@@ -22,17 +23,18 @@ const Recommended = ({ mediaType, mediaId }) => {
       // Filter out items with a rating below 6 and that have no poster
       const filteredResults = response.data.results.filter(
         (item) => item.vote_average >= 6 && item.poster_path
-      );
+      ); // Filters recommendations by rating and the presence of a poster
       setRecommendations(filteredResults);
     }
 
     fetchRecommendations();
   }, [mediaType, mediaId]);
 
+  // Handles click on a recommended item, navigating to its detail page
   const handleItemClick = (item) => {
-    const mediaTypeItem = item.first_air_date ? "tv" : "movie";
+    const mediaTypeItem = item.first_air_date ? "tv" : "movie"; // Determines if the item is a movie or TV show
     navigate(`/media/${mediaTypeItem}/${item.id}`);
-    window.location.reload();
+    window.location.reload(); // Reloads the page to ensure the navigation takes effect
   };
 
   const handleImageLoad = (id) => {

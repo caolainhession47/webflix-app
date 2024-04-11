@@ -8,25 +8,28 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Row({ title, fetchUrl, isLargeRow }) {
-  const [items, setItems] = useState([]);
-  const [loadedImages, setLoadedImages] = useState([]);
+  const [items, setItems] = useState([]); // State to hold the list of media items fetched from the API
+  const [loadedImages, setLoadedImages] = useState([]); // State to track which images have been loaded
   const navigate = useNavigate();
-  const base_url = "https://image.tmdb.org/t/p/original/";
+  const base_url = "https://image.tmdb.org/t/p/original/"; // Base URL for media images
 
+  // Fetches media items from the API when the component mounts or when fetchUrl changes
   useEffect(() => {
     async function fetchData() {
       const request = await axios.get(fetchUrl);
-      setItems(request.data.results);
+      setItems(request.data.results); // Sets the fetched media items in state
       return request;
     }
     fetchData();
   }, [fetchUrl]);
 
+  // Handles click on a media item, navigating to its detail page
   const handleItemClick = (item) => {
-    const mediaType = item.first_air_date ? "tv" : "movie";
+    const mediaType = item.first_air_date ? "tv" : "movie"; // Determines if the item is a movie or TV show based on the presence of 'first_air_date'
     navigate(`/media/${mediaType}/${item.id}`);
   };
 
+  // Handles image load event, adding the media item's ID to the loadedImages state
   const handleImageLoad = (id) => {
     setLoadedImages((prevLoadedImages) => [...prevLoadedImages, id]);
   };

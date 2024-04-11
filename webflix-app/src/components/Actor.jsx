@@ -11,6 +11,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 
 const Actor = ({ personId }) => {
+  // State hooks for storing actor details, known-for movies, social links, and loaded images
   const [personDetails, setPersonDetails] = useState({});
   const [knownForMovies, setKnownForMovies] = useState([]);
   const [socials, setSocials] = useState({});
@@ -18,10 +19,12 @@ const Actor = ({ personId }) => {
   const navigate = useNavigate();
   const base_url = "https://image.tmdb.org/t/p/original/";
 
+  // Function to truncate long strings
   function truncate(string, n) {
     return string?.length > n ? string.substr(0, n) + "..." : string;
   }
 
+  // Effect hook to fetch actor details, known-for movies, and social links
   useEffect(() => {
     const fetchDetails = async () => {
       const detailsResponse = await axios.get(
@@ -43,15 +46,18 @@ const Actor = ({ personId }) => {
     fetchDetails();
   }, [personId]);
 
+  // Handles navigation to movie/TV show detail page
   const handleItemClick = (item) => {
     const mediaType = item.first_air_date ? "tv" : "movie";
     navigate(`/media/${mediaType}/${item.id}`);
   };
 
+  // Handles opening social media links
   const handleSocialClick = (url) => {
     if (url) window.open(url, "_blank");
   };
 
+  // Updates state when an image is loaded
   const handleImageLoad = (id) => {
     setLoadedImages((prevLoadedImages) => [...prevLoadedImages, id]);
   };

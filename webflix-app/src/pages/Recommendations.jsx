@@ -16,6 +16,7 @@ import Footer from "../components/Footer";
 import FullPageLoader from "../components/FullPageLoader";
 import { toast } from "react-toastify";
 
+// Material UI theme customization
 const theme = createTheme({
   palette: {
     primary: {
@@ -66,6 +67,7 @@ const theme = createTheme({
 });
 
 const Recommendations = () => {
+  // State hooks for managing various component states
   const [activeButton, setActiveButton] = useState("forYou");
   const [recommendationIDs, setRecommendationIDs] = useState([]);
   const [emailInputs, setEmailInputs] = useState(Array(6).fill(""));
@@ -75,6 +77,7 @@ const Recommendations = () => {
   const [loadingForYou, setLoadingForYou] = useState(false);
   const [showEmailFields, setShowEmailFields] = useState(true);
 
+  // Fetch user's email if authenticated
   useEffect(() => {
     const unsubscribe = firebaseAuth.onAuthStateChanged((currentUser) => {
       setCurrentUserEmail(currentUser ? currentUser.email : null);
@@ -82,6 +85,7 @@ const Recommendations = () => {
     return () => unsubscribe();
   }, []);
 
+  // Handle scroll event for Navbar visibility
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
@@ -90,12 +94,14 @@ const Recommendations = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Fetch 'For You' recommendations if the user is authenticated and 'For You' mode is active
   useEffect(() => {
     if (currentUserEmail && activeButton === "forYou") {
       fetchForYouRecommendations(currentUserEmail);
     }
   }, [currentUserEmail, activeButton]);
 
+  // Function to fetch personalized recommendations
   const fetchForYouRecommendations = async (email) => {
     setLoadingForYou(true);
     try {
@@ -125,6 +131,7 @@ const Recommendations = () => {
 
   const hasRecommendations = recommendationIDs.length > 0;
 
+  // Function to fetch watch party recommendations based on provided emails
   const handleGenerateWatchPartyRecommendations = async () => {
     const emails = emailInputs.filter((email) => email.trim() !== "");
     if (emails.length === 0) return;
@@ -151,12 +158,14 @@ const Recommendations = () => {
     }
   };
 
+  // Function to handle changes in email input fields
   const handleEmailInputChange = (index, value) => {
     const updatedEmails = [...emailInputs];
     updatedEmails[index] = value;
     setEmailInputs(updatedEmails);
   };
 
+  // Function to handle button clicks for toggling between 'For You' and 'Watch Party' modes
   const handleButtonClick = (button) => {
     setActiveButton(button);
     if (button === "watchParty") {
@@ -169,6 +178,7 @@ const Recommendations = () => {
     }
   };
 
+  // Conditional rendering based on loading states and the availability of recommendations
   if (loadingForYou || (activeButton === "forYou" && loadingRecommendations)) {
     return (
       <>

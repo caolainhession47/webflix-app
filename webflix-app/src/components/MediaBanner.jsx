@@ -17,13 +17,14 @@ import serverAxios from "../axios/serverAxios";
 import { toast } from "react-toastify";
 
 function MediaBanner() {
-  const { mediaType, mediaId } = useParams();
-  const [media, setMedia] = useState(null);
-  const [genres, setGenres] = useState([]);
+  const { mediaType, mediaId } = useParams(); // Extracting media type and ID from URL parameters
+  const [media, setMedia] = useState(null); // State for storing media details
+  const [genres, setGenres] = useState([]); // State for storing media genres
   const navigate = useNavigate();
-  const [releaseYear, setReleaseYear] = useState("");
-  const [currentUser, setCurrentUser] = useState(null);
+  const [releaseYear, setReleaseYear] = useState(""); // State for storing media release year
+  const [currentUser, setCurrentUser] = useState(null); // State for storing current user
 
+  // Auth state listener to set current user
   useEffect(() => {
     const unsubscribe = firebaseAuth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -32,14 +33,17 @@ function MediaBanner() {
     return unsubscribe; // Unsubscribe from the listener when the component unmounts
   }, []);
 
+  // Effect hook to fetch media details
   useEffect(() => {
     async function fetchMedia() {
       try {
+        // Constructing the request URL based on media type
         const requestUrl =
           mediaType === "movie"
             ? requests.fetchMovieDetails(mediaId)
             : requests.fetchTvShowDetails(mediaId);
 
+        // Fetching media details from the API
         const response = await axios.get(
           `https://api.themoviedb.org/3${requestUrl}`
         );
@@ -78,12 +82,14 @@ function MediaBanner() {
   const backdropUrl = `https://image.tmdb.org/t/p/original/${media.backdrop_path}`;
   const posterUrl = `https://image.tmdb.org/t/p/w500/${media.poster_path}`;
 
+  // Handler for adding media to the watchlist
   const handleAddToWatchlist = async () => {
     if (!currentUser || !currentUser.email) {
       toast.warning("Please log in to add to your watchlist");
       return;
     }
 
+    // Constructing the item to add to the watchlist
     const itemToAdd = {
       mediaId: media.id,
       mediaType: mediaType,
@@ -99,6 +105,7 @@ function MediaBanner() {
         movie: itemToAdd,
       });
 
+      // Handling response and displaying appropriate toast notifications
       if (response.data.msg === "Movie already in watchlist.") {
         toast.info("Movie already in watchlist!");
       } else {
@@ -106,6 +113,7 @@ function MediaBanner() {
         toast.success("Added to watchlist successfully!");
       }
     } catch (error) {
+      // Handling errors and displaying error messages through toast notifications
       if (error.response && error.response.status === 400) {
         toast.error(error.response.data.msg);
       } else {
@@ -115,6 +123,7 @@ function MediaBanner() {
     }
   };
 
+  // Similar handler for adding media to the favorites
   const handleAddToFavorites = async () => {
     if (!currentUser || !currentUser.email) {
       toast.warning("Please log in to add to your favorites");

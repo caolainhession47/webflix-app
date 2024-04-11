@@ -10,16 +10,17 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { toast } from "react-toastify";
 
 function ReviewsComp({ mediaId, mediaType, mediaTitle, posterPath }) {
-  const [reviews, setReviews] = useState([]);
-  const [reviewText, setReviewText] = useState("");
-  const [rating, setRating] = useState(2); // Start with 2 stars
-  const [user, setUser] = useState(null);
+  const [reviews, setReviews] = useState([]); // State to hold the list of reviews
+  const [reviewText, setReviewText] = useState(""); // State for the text content of a new review
+  const [rating, setRating] = useState(2); // Start with 2 stars for the rating
+  const [user, setUser] = useState(null); // State to hold the current authenticated user
 
+  // useEffect hook to listen for changes in the authentication state
   useEffect(() => {
     const unsubscribe = firebaseAuth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
     });
-    return () => unsubscribe();
+    return () => unsubscribe(); // Cleanup function to unsubscribe from the auth listener
   }, []);
 
   const fetchReviews = useCallback(async () => {
@@ -34,6 +35,7 @@ function ReviewsComp({ mediaId, mediaType, mediaTitle, posterPath }) {
     }
   }, [mediaId]);
 
+  // useEffect hook to call the fetchReviews function when the component mounts or when mediaId changes
   useEffect(() => {
     fetchReviews();
   }, [fetchReviews, mediaId]);

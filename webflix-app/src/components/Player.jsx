@@ -6,13 +6,14 @@ import requests from "../axios/requests";
 import FullPageLoader from "./FullPageLoader";
 
 function Player() {
-  const { mediaType, mediaId } = useParams();
-  const [trailerUrl, setTrailerUrl] = useState("");
-  const iframeRef = useRef(null);
+  const { mediaType, mediaId } = useParams(); // Extracting media type and ID from URL parameters
+  const [trailerUrl, setTrailerUrl] = useState(""); // State to store the fetched trailer URL
+  const iframeRef = useRef(null); // Ref for the iframe element to dynamically set its height
   const navigate = useNavigate();
 
+  // Fetches the trailer URL for the specified media
   useEffect(() => {
-    let isCancelled = false;
+    let isCancelled = false; // Flag to prevent state update on an unmounted component
 
     async function fetchTrailer() {
       try {
@@ -26,15 +27,18 @@ function Player() {
           `https://api.themoviedb.org/3${urlEndpoint}`
         );
         console.log(response.data);
+        // Finding the first "Trailer" type video in the response
         const trailerKey = response.data.results.find(
           (video) => video.type === "Trailer"
         )?.key;
 
         if (trailerKey) {
+          // If a trailer is found, constructs the YouTube embed URL and sets it in state
           setTrailerUrl(
             `https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=0`
           );
         } else {
+          // If no trailer is found, navigates back to the media detail page
           if (!isCancelled) {
             alert("No trailer found for this show!");
             navigate(`/media/${mediaType}/${mediaId}`);
@@ -56,6 +60,7 @@ function Player() {
     };
   }, [mediaType, mediaId, navigate]);
 
+  // Adjusts the iframe height based on its width to maintain a 16:9 aspect ratio
   useEffect(() => {
     if (iframeRef.current && trailerUrl) {
       const height = (iframeRef.current.offsetWidth * 9) / 16 + "px";
@@ -63,6 +68,7 @@ function Player() {
     }
   }, [trailerUrl]);
 
+  // Displays a loader if the trailer URL hasn't been set yet
   if (!trailerUrl) {
     return <FullPageLoader />;
   }

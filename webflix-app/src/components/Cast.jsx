@@ -9,20 +9,24 @@ import styled from "styled-components";
 import Container from "react-bootstrap/Container";
 import { useNavigate } from "react-router-dom";
 
+// CastCarousel component takes mediaId and mediaType as props
 const CastCarousel = ({ mediaId, mediaType }) => {
-  const [casts, setCasts] = useState([]);
+  const [casts, setCasts] = useState([]); // State hook to store cast members
   const navigate = useNavigate();
 
+  // Effect hook to fetch cast members on component mount or when mediaId or mediaType changes
   useEffect(() => {
     const fetchCast = async () => {
       try {
+        // Fetching cast members from API
         const response = await axios.get(
           requests.fetchCast(mediaType, mediaId)
         );
+        // Filtering out cast members without profile images
         const filteredCasts = response.data.cast.filter(
           (cast) => cast.profile_path != null
         );
-        setCasts(filteredCasts);
+        setCasts(filteredCasts); // Setting state with filtered cast members
       } catch (error) {
         console.error("Error fetching cast:", error);
       }
@@ -31,6 +35,7 @@ const CastCarousel = ({ mediaId, mediaType }) => {
     fetchCast();
   }, [mediaId, mediaType]);
 
+  // Grouping cast members into arrays of 5 for carousel slides
   const castGroups = [];
   for (let i = 0; i < casts.length; i += 5) {
     castGroups.push(casts.slice(i, i + 5));

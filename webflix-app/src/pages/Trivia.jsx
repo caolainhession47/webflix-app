@@ -16,6 +16,7 @@ import ActorsTriviaBg from "../assets/actor-trivia-bg.jpg";
 import DirectorsTriviaBg from "../assets/directors-trivia-bg.jpg";
 import Footer from "../components/Footer";
 
+// Background images for different trivia categories
 const backgrounds = {
   oscars: OscarsTriviaBg,
   movie: MoviesTriviaBg,
@@ -35,6 +36,7 @@ export default function Trivia() {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
 
+  // Scroll event listener to change the navbar appearance on scroll
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
@@ -47,6 +49,7 @@ export default function Trivia() {
     };
   }, []);
 
+  // Fetch trivia questions from the server when the component mounts or the challengeType changes
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
@@ -64,13 +67,16 @@ export default function Trivia() {
     fetchQuestions();
   }, [challengeType]);
 
+  // Background image based on the challenge type
   const bgImage = backgrounds[challengeType] || MoviesTriviaBg;
 
+  // Function to handle option selection for each question
   const handleOptionSelect = (questionIndex, option) => {
     setSelectedOptions({ ...selectedOptions, [questionIndex]: option });
   };
 
   const handleSubmit = async () => {
+    // Logic to calculate results and update the user's trivia results in the database
     let correct = 0;
     let incorrect = 0;
     questions.forEach((question, index) => {
@@ -101,6 +107,7 @@ export default function Trivia() {
     }
   };
 
+  // Conditional rendering based on loading state, error state, and submission status
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 

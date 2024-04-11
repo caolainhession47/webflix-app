@@ -7,11 +7,13 @@ import styled from "styled-components";
 import Container from "react-bootstrap/Container";
 
 const Videos = ({ mediaId, mediaType }) => {
-  const [videos, setVideos] = useState([]);
+  const [videos, setVideos] = useState([]); // State to hold the list of videos
 
   useEffect(() => {
+    // Function to fetch videos from the API
     const fetchVideos = async () => {
       try {
+        // Determines the appropriate URL based on media type
         const fetchUrl =
           mediaType === "movie"
             ? requests.fetchMovieVideos(mediaId)
@@ -26,6 +28,7 @@ const Videos = ({ mediaId, mediaType }) => {
     fetchVideos();
   }, [mediaId, mediaType]);
 
+  // If there are no videos, the component renders nothing
   if (videos.length === 0) return null;
 
   return (

@@ -14,7 +14,7 @@ export default function Login() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
       if (user) {
-        navigate("/");
+        navigate("/"); // Effect to redirect authenticated users to the homepage
       }
     });
 
@@ -23,11 +23,13 @@ export default function Login() {
 
   const [error, setError] = useState("");
 
+  // Function to handle changes in the form inputs
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCredentials({ ...credentials, [name]: value });
   };
 
+  // Function to handle the form submission
   const handleSubmit = async () => {
     const { email, password } = credentials;
     try {
